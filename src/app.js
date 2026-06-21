@@ -29,6 +29,7 @@ const assetUrl = path => path?.startsWith("assets/")
   ? `${repoBase}outputs/${path}`
   : path;
 
+
 let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
