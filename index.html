@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Virtueller Kindergarten | Three.js</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <main id="app">
+    <canvas id="scene" aria-label="Begehbarer virtueller 3D-Kindergarten"></canvas>
+
+    <header class="topbar">
+      <div>
+        <strong>Virtueller Kindergarten</strong>
+        <span id="locationLabel">Garten</span>
+      </div>
+      <button id="resetView" class="icon-button" type="button" aria-label="Ansicht zurücksetzen" title="Ansicht zurücksetzen">⌂</button>
+    </header>
+
+    <nav class="room-nav" id="roomNav" aria-label="Räume"></nav>
+
+    <aside class="info-panel" id="infoPanel" aria-live="polite" hidden>
+      <button id="closeInfo" class="icon-button close-button" type="button" aria-label="Information schließen">×</button>
+      <header class="info-heading">
+        <p id="infoKind">Lernort</p>
+        <h1 id="infoTitle"></h1>
+        <p id="infoDescription"></p>
+      </header>
+      <div id="infoBody" class="info-body"></div>
+    </aside>
+
+    <div class="crosshair" aria-hidden="true"></div>
+    <div class="loading" id="loading">3D-Räume werden vorbereitet</div>
+
+    <dialog class="image-dialog" id="imageDialog">
+      <button id="closeImage" class="icon-button dialog-close" type="button" aria-label="Bild schließen">×</button>
+      <img id="largeImage" alt="">
+    </dialog>
+
+    <dialog class="document-dialog" id="documentDialog">
+      <header>
+        <div>
+          <strong id="documentTitle">Dokument</strong>
+          <span id="documentNote"></span>
+        </div>
+        <button id="closeDocument" class="icon-button" type="button" aria-label="Dokument schließen">×</button>
+      </header>
+      <iframe id="documentFrame" title="Dokumentansicht"></iframe>
+    </dialog>
+
+    <section id="webglFallback" class="fallback" hidden>
+      <h1>3D-Darstellung nicht verfügbar</h1>
+      <p>Dieser Browser unterstützt die benötigte Grafikdarstellung nicht.</p>
+    </section>
+  </main>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
