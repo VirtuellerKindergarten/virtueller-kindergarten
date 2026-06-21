@@ -29,8 +29,11 @@ const bundledOutput =
   location.protocol === "file:" ||
   location.pathname.endsWith("/outputs/kindergarten-three.html");
 
+const embeddedAssets = globalThis.KINDERGARTEN_EMBEDDED_ASSETS || {};
+
 const assetUrl = path => {
   if (!path) return path;
+  if (embeddedAssets[path]) return embeddedAssets[path];
   if (!path.startsWith("assets/")) return path;
   return bundledOutput ? path : `${repoBase}outputs/${path}`;
 };
@@ -956,6 +959,132 @@ function addRhythmicsScene(parent) {
   }
 }
 
+function addMorningCircleShelf(parent) {
+  const x = 35.2;
+  const z = -49.2;
+  for (const dz of [-4.2, 4.2]) meshBox(parent, [1.35, 3.55, .22], [x, 1.78, z + dz], materials.woodLight, "kreisregal");
+  for (const y of [.18, 1.22, 2.28, 3.48]) meshBox(parent, [1.35, .18, 8.6], [x, y, z], materials.woodLight, "kreisregal");
+  for (const dz of [-1.45, 1.45]) meshBox(parent, [1.3, 3.2, .15], [x, 1.7, z + dz], materials.woodLight, "kreisregal");
+
+  // ORFF-Instrumente im unteren Fach.
+  for (let i = 0; i < 7; i++) {
+    meshCylinder(parent, .22 + (i % 2) * .06, .48, [34.45, .62, z - 3.45 + i * .48], [materials.coral, materials.yellow, materials.blue][i % 3], "kreisregal", [0, 0, Math.PI / 2]);
+  }
+  for (let i = 0; i < 5; i++) meshBox(parent, [.65, .72, .16], [34.45, 1.67, z - 3.3 + i * .72], [materials.coral, materials.sage, materials.yellow, materials.blue][i % 4], "kreisregal");
+
+  // Brettspiele als farbige, beschriftbare Spielschachteln.
+  for (let i = 0; i < 5; i++) meshBox(parent, [.72, .16, 1.1], [34.45, 2.48 + i * .16, z - .65], [materials.blue, materials.coral, materials.yellow, materials.sage, materials.violet][i], "kreisregal");
+
+  // Globus mit geneigter Achse.
+  const globe = meshSphere(parent, 1.05, [34.35, 2.92, z + 2.75], materials.blue, "kreisregal");
+  globe.scale.set(1, 1, 1);
+  meshCylinder(parent, .07, 1.35, [34.35, 2.9, z + 2.75], materials.metal, "kreisregal", [0, 0, -.28]);
+  meshCylinder(parent, .42, .09, [34.35, 2.34, z + 2.75], materials.dark, "kreisregal");
+
+  // Gefühlskarten sichtbar im mittleren Fach.
+  for (let i = 0; i < 6; i++) {
+    const cardZ = z + .3 + i * .48;
+    meshBox(parent, [.08, .72, .38], [34.48, 1.67, cardZ], [materials.yellow, materials.coral, materials.blue, materials.sage][i % 4], "kreisregal");
+    meshSphere(parent, .09, [34.42, 1.75, cardZ], materials.dark, "kreisregal");
+  }
+}
+
+function buildMorningCircle() {
+  const circle = new THREE.Group();
+  scene.add(circle);
+  const centerX = 24;
+  const centerZ = -49.2;
+  const radius = 5.65;
+
+  const carpet = new THREE.Mesh(new THREE.CircleGeometry(4.15, 48), materials.sage);
+  carpet.rotation.x = -Math.PI / 2;
+  carpet.position.set(centerX, .24, centerZ);
+  carpet.userData.infoKey = "morgenkreis";
+  circle.add(carpet); interactiveMeshes.push(carpet);
+
+  // 23 Sitzpölster; der 24. Platz ist der erhöhte Hocker der Fachperson.
+  for (let i = 1; i < 24; i++) {
+    const angle = i / 24 * Math.PI * 2;
+    const material = [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet, materials.cream][i % 6];
+    meshBox(circle, [1.12, .28, .92], [centerX + Math.cos(angle) * radius, .34, centerZ + Math.sin(angle) * radius], material, "morgenkreis", [0, -angle, 0]);
+  }
+  const stoolX = centerX + radius;
+  meshCylinder(circle, .62, .34, [stoolX, .74, centerZ], materials.woodLight, "morgenkreis");
+  for (const dz of [-.38, .38]) for (const dx of [-.38, .38]) meshCylinder(circle, .09, .65, [stoolX + dx, .34, centerZ + dz], materials.woodDark, "morgenkreis");
+
+  addMorningCircleShelf(circle);
+  addWallTattoo(circle, "assets/morgenkreis/reise-welt.png", [24, 2.95, -43.19], 7.25, 4.08, Math.PI, "morgenkreis");
+  makeLabel("Morgen- und Mittagskreis", [24, 5.35, -49.2], 4.8);
+}
+
+function addCafeChair(parent, x, z, rotation = 0, material = materials.sage) {
+  const chair = new THREE.Group();
+  chair.position.set(x, 0, z);
+  chair.rotation.y = rotation;
+  parent.add(chair);
+  meshBox(chair, [1.05, .22, .95], [0, .52, 0], material, "cafeteria");
+  meshBox(chair, [1.05, .78, .16], [0, .88, -.39], material, "cafeteria");
+  for (const dx of [-.38, .38]) for (const dz of [-.32, .32]) meshBox(chair, [.12, .48, .12], [dx, .25, dz], materials.woodDark, "cafeteria");
+}
+
+function addCafeTable(parent, x, z) {
+  meshBox(parent, [4.1, .25, 2.25], [x, .82, z], materials.woodLight, "cafeteria");
+  for (const dx of [-1.72, 1.72]) for (const dz of [-.78, .78]) meshBox(parent, [.18, .78, .18], [x + dx, .4, z + dz], materials.woodDark, "cafeteria");
+  addCafeChair(parent, x - 1.35, z - 1.75, 0, materials.sage);
+  addCafeChair(parent, x + 1.35, z - 1.75, 0, materials.blue);
+  addCafeChair(parent, x - 1.35, z + 1.75, Math.PI, materials.yellow);
+  addCafeChair(parent, x + 1.35, z + 1.75, Math.PI, materials.coral);
+}
+
+function buildCafeteriaKitchen() {
+  const area = new THREE.Group();
+  scene.add(area);
+
+  meshBox(area, [17.5, .08, 14], [21.8, .18, 17.4], materials.cream, "cafeteria");
+  addCafeTable(area, 17.6, 19.7);
+  addCafeTable(area, 24.2, 19.7);
+  addCafeTable(area, 19.6, 14.3);
+
+  // Offene Küchenzeile mit hohen Geräten an der rückwärtigen Raumkante.
+  meshBox(area, [19, .08, 6.4], [28, .2, 9.2], materials.floor, "kueche");
+  meshBox(area, [7.6, 1.05, 1.45], [20.1, .56, 7.35], materials.woodLight, "kueche");
+  meshBox(area, [7.8, .14, 1.62], [20.1, 1.12, 7.35], materials.metal, "kueche");
+  meshBox(area, [2.15, .16, 1.05], [18.6, 1.22, 7.35], materials.dark, "kueche");
+  meshBox(area, [1.7, .08, .78], [22.0, 1.23, 7.35], materials.water, "kueche");
+  meshCylinder(area, .07, .72, [22.0, 1.58, 6.98], materials.metal, "kueche");
+  meshCylinder(area, .07, .52, [22.0, 1.9, 7.2], materials.metal, "kueche", [Math.PI / 2, 0, 0]);
+
+  // Kühlschrank, Hochschrank und Backofen.
+  meshBox(area, [2.35, 4.35, 1.55], [34.7, 2.18, 7.35], materials.metal, "kueche");
+  meshBox(area, [.08, 1.55, .12], [33.72, 2.78, 8.15], materials.dark, "kueche");
+  meshBox(area, [2.35, 4.35, 1.55], [31.9, 2.18, 7.35], materials.woodLight, "kueche");
+  meshBox(area, [1.82, 1.55, .12], [31.9, 1.52, 8.15], materials.dark, "kueche");
+  meshBox(area, [1.58, 1.18, .04], [31.9, 1.55, 8.22], materials.glass, "kueche");
+  for (let i = 0; i < 4; i++) meshCylinder(area, .08, .05, [31.35 + i * .36, 2.42, 8.23], materials.dark, "kueche", [Math.PI / 2, 0, 0]);
+
+  // Mikrowelle auf Augenhöhe neben dem Backofen.
+  meshBox(area, [2.4, 1.35, 1.45], [28.9, 2.72, 7.35], materials.cream, "kueche");
+  meshBox(area, [1.65, .82, .08], [28.7, 2.72, 8.13], materials.dark, "kueche");
+  meshBox(area, [.32, .82, .08], [29.75, 2.72, 8.13], materials.metal, "kueche");
+
+  // Abgestufte Kochinsel: reguläre Arbeitshöhe und gut erreichbare Kinderseite.
+  meshBox(area, [7.6, .86, 2.2], [29.1, .57, 11.65], materials.woodLight, "kochinsel");
+  meshBox(area, [7.9, .16, 2.42], [29.1, 1.08, 11.65], materials.metal, "kochinsel");
+  meshBox(area, [7.6, .58, 1.4], [29.1, .4, 13.48], materials.sage, "kochinsel");
+  meshBox(area, [7.9, .15, 1.58], [29.1, .77, 13.48], materials.woodLight, "kochinsel");
+
+  // Kochfeld und Mixer auf der Insel.
+  meshBox(area, [2.2, .06, 1.25], [30.6, 1.2, 11.45], materials.dark, "kochinsel");
+  for (const dx of [-.62, .62]) for (const dz of [-.32, .32]) meshCylinder(area, .22, .025, [30.6 + dx, 1.25, 11.45 + dz], materials.metal, "kochinsel");
+  meshCylinder(area, .48, .35, [27.0, 1.38, 11.5], materials.metal, "kochinsel");
+  meshBox(area, [.72, .85, .68], [27.0, 1.72, 11.5], materials.coral, "kochinsel");
+  meshBox(area, [.22, .85, .22], [27.45, 1.78, 11.5], materials.dark, "kochinsel", [0, 0, -.55]);
+  meshBox(area, [.5, .18, .5], [27.0, 2.18, 11.5], materials.cream, "kochinsel");
+
+  makeLabel("Ess- und Cafeteriabereich", [21.2, 5.25, 18.2], 4.7);
+  makeLabel("Offene Küche", [29.4, 5.0, 9.3], 3.5);
+}
+
 function buildInterior() {
   const entrance = new THREE.Group(); scene.add(entrance);
   meshBox(entrance, [4, .25, 2.4], [5.8, .82, 16], materials.woodLight, "eingang");
@@ -964,6 +1093,7 @@ function buildInterior() {
   for (let i = 0; i < 6; i++) meshBox(entrance, [1, .08, 1.4], [4.05 + i * .68, .98 + i * .01, 16], [materials.cream, materials.blue, materials.coral, materials.sage, materials.yellow, materials.violet][i], "eingang", [0, i * .03 - .08, 0]);
 
   buildOffices();
+  buildCafeteriaKitchen();
 
   const building = new THREE.Group(); scene.add(building);
   meshBox(building, [7.5, .08, 5.2], [-5.2, .2, 6.5], materials.blue, "bauteppich");
@@ -1009,6 +1139,7 @@ function buildInterior() {
   addGuitar(music, 17.2, -42.6);
   for (let i = 0; i < 8; i++) meshBox(music, [1.1, .08, 1.35], [18.6 + (i % 4) * 1.35, .28, -34.2 + Math.floor(i / 4) * 1.7], i % 2 ? materials.cream : materials.yellow, "klanggeschichte");
   addRhythmicsScene(music);
+  buildMorningCircle();
 
   const rest = new THREE.Group(); scene.add(rest);
   meshBox(rest, [10, .1, 6], [0, .2, -40], materials.sage, "ruheraum");
@@ -1181,6 +1312,8 @@ optimizeRepeatedMeshes();
 
 const roomTargets = [
   ["Eingang", "eingang", [0, 4.4, 34], 0],
+  ["Cafeteria", "cafeteria", [21, 4.2, 23], 0, -.25],
+  ["Küche", "kueche", [29, 4.0, 16.5], 0, -.3],
   ["Teamraum", "teamraum", [-23.1, 3.4, 17], 0, -.28],
   ["Büro", "buero", [-23, 3.2, 4.8], 0, -.33],
   ["Gruppenraum", "gruppenraum", [0, 4.4, 13], 0],
@@ -1188,6 +1321,7 @@ const roomTargets = [
   ["Bewegungsraum", "bewegung", [21, 4.4, -8], 0],
   ["Forschen", "forscherraum", [-22, 4.4, -27], 0],
   ["Musik", "musik", [22, 4.4, -27], 0],
+  ["Morgenkreis", "morgenkreis", [24, 4.2, -45], 0, -.28],
   ["Ruhe", "ruheraum", [0, 4.4, -32], 0],
   ["Garten", "garten", [0, 4.4, 58], 0]
 ];
@@ -1223,18 +1357,21 @@ function updateLocation() {
   if (x > -39 && x < 39 && z < 25 && z > -56) {
     if (x < -12 && z > 6) label = "Teamraum";
     else if (x < -15 && x > -31 && z > -2 && z <= 6) label = "Büro";
+    else if (x > 25 && z > 6 && z < 15) label = "Offene Küche";
+    else if (x > 12 && z > 10) label = "Cafeteria";
     else if (z > 12) label = "Eingang";
     else if (z > -18 && Math.abs(x) < 12) label = "Gruppenraum";
     else if (z > -27 && x < -12) label = "Atelier";
     else if (z > -27 && x > 12) label = "Bewegungsraum";
     else if (z <= -27 && x < -10) label = "Forscherraum";
+    else if (z < -43 && x > 10) label = "Morgen- und Mittagskreis";
     else if (z <= -27 && x > 10) label = "Musikbereich";
     else label = "Ruheraum";
   }
   if (label !== activeRoom) {
     activeRoom = label;
     locationLabel.textContent = label;
-    document.querySelectorAll(".room-button").forEach(button => button.classList.toggle("active", button.textContent === label || (label === "Musikbereich" && button.textContent === "Musik") || (label === "Forscherraum" && button.textContent === "Forschen")));
+    document.querySelectorAll(".room-button").forEach(button => button.classList.toggle("active", button.textContent === label || (label === "Offene Küche" && button.textContent === "Küche") || (label === "Musikbereich" && button.textContent === "Musik") || (label === "Morgen- und Mittagskreis" && button.textContent === "Morgenkreis") || (label === "Forscherraum" && button.textContent === "Forschen")));
   }
 }
 
@@ -1298,7 +1435,10 @@ function section(title, items) { return items?.length ? `<section class="info-se
 
 function documentsMarkup(info) {
   if (!info.documents?.length) return "";
-  return `<section class="info-section"><h3>Dokumente und Planungen</h3><div class="document-list">${info.documents.map(doc => `<a class="document-link" href="${assetUrl(doc.href)}" data-title="${doc.title}" data-note="${doc.note}" data-type="${doc.type}"><span class="document-type">${doc.type}</span><span><strong>${doc.title}</strong><small>${doc.note}</small></span></a>`).join("")}</div></section>`;
+  return `<section class="info-section"><h3>Dokumente und Planungen</h3><div class="document-list">${info.documents.map(doc => {
+    const viewPath = doc.type === "DOCX" ? doc.href.replace(/\.docx$/i, ".html") : doc.href;
+    return `<a class="document-link" href="${assetUrl(doc.href)}" data-view="${assetUrl(viewPath)}" data-title="${doc.title}" data-note="${doc.note}" data-type="${doc.type}"><span class="document-type">${doc.type}</span><span><strong>${doc.title}</strong><small>${doc.note}</small></span></a>`;
+  }).join("")}</div></section>`;
 }
 
 function competenciesMarkup(info) {
@@ -1351,13 +1491,14 @@ function hideInfo() { infoPanel.hidden = true; currentInfoKey = ""; }
 
 function openDocument(link) {
   const href = link.getAttribute("href");
+  const viewHref = link.dataset.view || href;
   const type = link.dataset.type;
   documentTitle.textContent = link.dataset.title;
   documentNote.textContent = link.dataset.note;
   if (type === "DOCX") documentFrame.removeAttribute("srcdoc");
   if (type === "PDF" || type === "DOCX") {
     documentFrame.removeAttribute("srcdoc");
-    documentFrame.src = type === "DOCX" ? href.replace(/\.docx$/i, ".html") : href;
+    documentFrame.src = viewHref;
   } else {
     documentFrame.src = "about:blank";
     documentFrame.srcdoc = `<style>body{display:grid;place-items:center;height:100vh;margin:0;font-family:Arial;background:#eef2ed;color:#183332}a{padding:12px 16px;border-radius:6px;background:#2f7272;color:white;text-decoration:none;font-weight:bold}</style><a href="${href}" target="_blank">Präsentation öffnen</a>`;

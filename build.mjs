@@ -24,9 +24,34 @@ const bundledThree = `const THREE = (() => {\n${threeSource.slice(0, exportStart
 const bundledContent = contentSource.replace(/export const /g, "const ");
 const bundledApp = appSource.replace(/^import .*?;\s*$/gm, "");
 
+const referencedAssets = new Set(
+  [...`${contentSource}\n${appSource}`.matchAll(/["'](assets\/[^"']+)["']/g)].map(match => match[1])
+);
+for (const path of [...referencedAssets]) {
+  if (/\.docx$/i.test(path)) referencedAssets.add(path.replace(/\.docx$/i, ".html"));
+}
+
+const mimeTypes = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".pdf": "application/pdf",
+  ".html": "text/html;charset=utf-8"
+};
+const embeddedAssets = {};
+for (const assetPath of referencedAssets) {
+  const extension = assetPath.slice(assetPath.lastIndexOf(".")).toLowerCase();
+  const mimeType = mimeTypes[extension];
+  if (!mimeType) continue;
+  const bytes = await readFile(join(root, "../outputs", ...assetPath.split("/")));
+  embeddedAssets[assetPath] = `data:${mimeType};base64,${bytes.toString("base64")}`;
+}
+const bundledAssets = `globalThis.KINDERGARTEN_EMBEDDED_ASSETS = ${JSON.stringify(embeddedAssets)};`;
+
 const output = html
   .replace('<link rel="stylesheet" href="./src/styles.css">', () => `<style>\n${css}\n</style>`)
-  .replace('<script type="module" src="./src/app.js"></script>', () => `<script type="module">\n${bundledThree}\n${bundledContent}\n${bundledApp}\n</script>`);
+  .replace('<script type="module" src="./src/app.js"></script>', () => `<script type="module">\n${bundledThree}\n${bundledAssets}\n${bundledContent}\n${bundledApp}\n</script>`);
 
 const target = join(root, "../outputs/kindergarten-three.html");
 await writeFile(target, output, "utf8");
