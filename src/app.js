@@ -25,9 +25,15 @@ const repoBase = location.pathname.includes("/virtueller-kindergarten/")
   ? "/virtueller-kindergarten/"
   : "";
 
-const assetUrl = path => path?.startsWith("assets/")
-  ? `${repoBase}outputs/${path}`
-  : path;
+const bundledOutput =
+  location.protocol === "file:" ||
+  location.pathname.endsWith("/outputs/kindergarten-three.html");
+
+const assetUrl = path => {
+  if (!path) return path;
+  if (!path.startsWith("assets/")) return path;
+  return bundledOutput ? path : `${repoBase}outputs/${path}`;
+};
 
 
 let renderer;
@@ -602,6 +608,42 @@ function addGuitar(parent, x, z) {
   }
 }
 
+const wallTattooTextures = new Map();
+
+function wallTattooTexture(src) {
+  const url = assetUrl(src);
+  if (!wallTattooTextures.has(url)) {
+    wallTattooTextures.set(url, new THREE.TextureLoader().loadAsync(url).then(texture => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      return texture;
+    }));
+  }
+  return wallTattooTextures.get(url);
+}
+
+function addWallTattoo(parent, src, position, width, height, rotationY, infoKey) {
+  wallTattooTexture(src).then(texture => {
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      alphaTest: .035,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      toneMapped: false
+    });
+    const tattoo = new THREE.Mesh(unitPlane, material);
+    tattoo.position.set(...position);
+    tattoo.rotation.y = rotationY;
+    tattoo.scale.set(width, height, 1);
+    tattoo.renderOrder = 4;
+    tattoo.userData.infoKey = infoKey;
+    parent.add(tattoo);
+    interactiveMeshes.push(tattoo);
+    invalidate();
+  }).catch(error => console.warn(`Wandtattoo konnte nicht geladen werden: ${src}`, error));
+}
+
 function buildOffices() {
   const offices = new THREE.Group();
   scene.add(offices);
@@ -668,6 +710,14 @@ function buildOffices() {
   meshBox(offices, [.72, 1.35, 1.05], [-20.45, .7, 1.55], materials.dark, "buero");
   addChair(offices, -24.25, 3.55, materials.sage, "buero", Math.PI);
   addChair(offices, -21.75, 3.55, materials.sage, "buero", Math.PI);
+
+  // Transparente Wandtattoos an den Außenseiten von Teamraum und Büro.
+  addWallTattoo(offices, "assets/buero-team/team-schilder.png", [-12.01, 4.02, 14.3], 4.45, 2.5, Math.PI / 2, "teamraum");
+  addWallTattoo(offices, "assets/buero-team/teamwork-sprechblase.png", [-13.55, 4.14, 19.17], 2.35, 1.32, 0, "teamraum");
+  addWallTattoo(offices, "assets/buero-team/buero-besprechung.png", [-23, 4.28, -2.17], 3.75, 2.11, Math.PI, "buero");
+  for (const x of [-29.5, -23.5, -17.3]) {
+    addWallTattoo(offices, "assets/buero-team/sonnenblumen.png", [x, 4.22, 19.17], 3.6, 2.03, 0, "teamraum");
+  }
 
   makeLabel("Team- und Arbeitsraum", [-23.1, 5.85, 12.4], 4.8);
   makeLabel("Kleines Büro", [-23, 5.4, 2], 3.4);
@@ -775,6 +825,68 @@ function addLightTable(parent) {
   circle.rotation.y = 0;
 }
 
+function addChildSink(parent, x) {
+  const z = -54.55;
+  meshBox(parent, [2.45, .32, 1.15], [x, .78, z], materials.cream, "waschbecken");
+  meshBox(parent, [2.1, .12, .82], [x, .96, z + .04], materials.metal, "waschbecken");
+  meshBox(parent, [1.65, .07, .58], [x, 1.03, z + .08], materials.water, "waschbecken");
+  meshCylinder(parent, .07, .62, [x, 1.32, z - .22], materials.metal, "waschbecken");
+  meshCylinder(parent, .07, .48, [x, 1.61, z], materials.metal, "waschbecken", [Math.PI / 2, 0, 0]);
+  meshCylinder(parent, .1, .08, [x, 1.64, z + .22], materials.dark, "waschbecken");
+}
+
+function addChildToilet(parent, x, z) {
+  meshCylinder(parent, .48, .55, [x, .3, z], materials.cream, "kindertoilette");
+  const seat = new THREE.Mesh(new THREE.TorusGeometry(.42, .1, 8, 20), materials.dark);
+  seat.position.set(x, .62, z);
+  seat.rotation.x = Math.PI / 2;
+  seat.userData.infoKey = "kindertoilette";
+  parent.add(seat); interactiveMeshes.push(seat);
+  meshBox(parent, [.8, .8, .28], [x - .48, .5, z], materials.cream, "kindertoilette");
+}
+
+function buildSanitationZone(parent) {
+  meshBox(parent, [25, .08, 12.4], [-26.2, .17, -49.5], materials.blue, "waschbecken");
+  for (const x of [-28.8, -24.8, -20.8]) addChildSink(parent, x);
+
+  const cubicleCenters = [-54.0, -50.75, -47.5, -44.25];
+  for (let i = 0; i <= 4; i++) {
+    const z = -55.6 + i * 3.25;
+    meshBox(parent, [4.9, 2.7, .18], [-36.25, 1.35, z], materials.cream, "kindertoilette");
+  }
+  meshBox(parent, [.18, 2.7, 13.2], [-38.7, 1.35, -49.1], materials.cream, "kindertoilette");
+  for (const z of cubicleCenters) {
+    addChildToilet(parent, -37.1, z);
+    meshBox(parent, [.16, 2.05, 2.4], [-33.82, 1.02, z], materials.woodLight, "kindertoilette");
+    meshSphere(parent, .12, [-33.7, 1.02, z + .78], materials.metal, "kindertoilette");
+  }
+
+  // Dusche mit transparenter Abtrennung und unmittelbar anschließendem Trockenbereich.
+  meshBox(parent, [3.4, .18, 3.5], [-31.3, .25, -49.2], materials.cream, "dusche");
+  meshBox(parent, [.1, 2.5, 3.5], [-29.62, 1.38, -49.2], materials.glass, "dusche");
+  meshBox(parent, [3.4, 2.5, .1], [-31.3, 1.38, -50.92], materials.glass, "dusche");
+  meshCylinder(parent, .07, 2.2, [-32.65, 1.45, -50.55], materials.metal, "dusche");
+  meshCylinder(parent, .25, .12, [-32.65, 2.48, -50.3], materials.metal, "dusche", [Math.PI / 2, 0, 0]);
+  meshCylinder(parent, .1, .05, [-31.3, .36, -49.2], materials.dark, "dusche");
+
+  meshBox(parent, [4.8, .42, 1.15], [-26.1, .38, -49.3], materials.woodLight, "trockenbereich");
+  meshCylinder(parent, .08, 3.1, [-27.8, 1.75, -51.0], materials.metal, "trockenbereich");
+  meshCylinder(parent, .08, 3.1, [-24.4, 1.75, -51.0], materials.metal, "trockenbereich");
+  meshBox(parent, [3.5, .1, .1], [-26.1, 2.9, -51.0], materials.metal, "trockenbereich");
+  for (let i = 0; i < 5; i++) meshBox(parent, [.58, 1.05, .08], [-27.45 + i * .68, 2.25, -50.94], [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet][i], "trockenbereich");
+}
+
+function addLearningTrays(parent) {
+  const z = -39.4;
+  for (const [x, key] of [[-19.1, "lerntabletts"], [-16.5, "lerntabletts"], [-13.9, "lerntabletts"]]) {
+    meshBox(parent, [2.2, .14, 1.65], [x, .82, z], materials.woodLight, key);
+    meshBox(parent, [1.9, .05, 1.35], [x, .91, z], materials.cream, key);
+  }
+  for (let i = 0; i < 8; i++) meshSphere(parent, .18, [-19.7 + (i % 4) * .38, 1.03, z - .28 + Math.floor(i / 4) * .5], i % 2 ? materials.woodDark : materials.sage, "lerntabletts");
+  for (let i = 0; i < 6; i++) meshCylinder(parent, .15, .06, [-17.15 + (i % 3) * .55, 1.02, z - .32 + Math.floor(i / 3) * .55], materials.woodDark, "lerntabletts");
+  for (let i = 0; i < 6; i++) meshBox(parent, [.32, .08, .5], [-14.55 + (i % 3) * .62, 1.02, z - .35 + Math.floor(i / 3) * .62], [materials.coral, materials.yellow, materials.blue][i % 3], "lerntabletts");
+}
+
 function buildResearchRoom() {
   const research = new THREE.Group();
   scene.add(research);
@@ -794,9 +906,54 @@ function buildResearchRoom() {
   addResearchShelf(research);
   addResearchCoats(research);
   addLightTable(research);
+  addLearningTrays(research);
+  buildSanitationZone(research);
 
   addWallPicture(research, "assets/mint/forscherkreis.png", [-23.7, 2.95, -42.78], 6.0, 4.8, 0, "forscherraum");
   addWallPicture(research, "assets/mint/kinder-forschen.jpg", [-23.7, 2.9, -27.22], 7.0, 3.94, Math.PI, "forscherraum");
+}
+
+function buildStoryScene(parent) {
+  const x = -4.2;
+  const z = -10.6;
+  meshBox(parent, [10.5, .1, 7.2], [x, .22, z], materials.sage, "schauplatzgestaltung");
+  // Flusslauf und Ufer aus mehreren überlappenden Segmenten.
+  for (const [dx, dz, angle] of [[-2.8, -1.2, .35], [-1.25, -.55, -.25], [.35, .05, .32], [2.0, .7, -.22]]) {
+    meshBox(parent, [3.1, .06, 1.0], [x + dx, .32, z + dz], materials.water, "schauplatzgestaltung", [0, angle, 0]);
+  }
+  for (const [dx, dz] of [[-3.7, 1.8], [-2.0, 1.25], [.2, 1.7], [2.8, 1.5], [3.7, -.8], [-.2, -2.1]]) {
+    meshCylinder(parent, .14, .9, [x + dx, .76, z + dz], materials.woodDark, "schauplatzgestaltung");
+    meshSphere(parent, .95, [x + dx, 1.45, z + dz], materials.leaf, "schauplatzgestaltung");
+  }
+  for (const [dx, dz] of [[-3.2, -.2], [-1.8, -2.0], [1.2, -1.5], [3.2, .2]]) meshSphere(parent, .65, [x + dx, .65, z + dz], materials.sage, "schauplatzgestaltung");
+  // Kleine Spielfiguren.
+  for (const [dx, dz, mat] of [[-1.1, 1.1, materials.coral], [.7, -.7, materials.yellow], [2.2, 1.8, materials.blue], [-2.4, -1.2, materials.violet]]) {
+    meshSphere(parent, .28, [x + dx, .9, z + dz], materials.cream, "schauplatzgestaltung");
+    meshBox(parent, [.34, .62, .28], [x + dx, .52, z + dz], mat, "schauplatzgestaltung");
+  }
+  // Aufgeschlagenes Bilderbuch neben dem Schauplatz.
+  meshBox(parent, [2.4, .1, 1.8], [x + 5.35, .42, z], materials.woodLight, "schauplatzgestaltung");
+  meshBox(parent, [1.15, .08, 1.55], [x + 4.78, .55, z], materials.cream, "schauplatzgestaltung", [0, 0, .08]);
+  meshBox(parent, [1.15, .08, 1.55], [x + 5.92, .55, z], materials.cream, "schauplatzgestaltung", [0, 0, -.08]);
+  meshBox(parent, [.78, .03, .65], [x + 4.78, .61, z - .15], materials.leaf, "schauplatzgestaltung");
+  meshBox(parent, [.78, .03, .65], [x + 5.92, .61, z + .15], materials.blue, "schauplatzgestaltung");
+}
+
+function addRhythmicsScene(parent) {
+  const cloth = new THREE.Mesh(new THREE.CircleGeometry(3.3, 40), materials.blue);
+  cloth.rotation.x = -Math.PI / 2;
+  cloth.position.set(20.5, .28, -40.1);
+  cloth.userData.infoKey = "rhythmik";
+  parent.add(cloth); interactiveMeshes.push(cloth);
+  for (let i = 0; i < 8; i++) {
+    const angle = i * Math.PI / 4;
+    const material = [materials.coral, materials.yellow, materials.sage, materials.blue][i % 4];
+    meshBox(parent, [1.1, .08, .8], [20.5 + Math.cos(angle) * 2.3, .36, -40.1 + Math.sin(angle) * 2.3], material, "rhythmik", [0, -angle, 0]);
+  }
+  for (const [dx, mat] of [[-1.3, materials.woodLight], [0, materials.woodDark], [1.3, materials.woodLight]]) {
+    meshBox(parent, [1.0, .35, .7], [20.5 + dx, .62, -40.1], mat, "rhythmik");
+    for (let i = 0; i < 6; i++) meshBox(parent, [.11, .08, .8], [20.12 + dx + i * .15, .84, -40.1], i % 2 ? materials.cream : materials.woodLight, "rhythmik");
+  }
 }
 
 function buildInterior() {
@@ -816,6 +973,7 @@ function buildInterior() {
   for (const [x, z, mat] of [[-7.8, -2, materials.coral], [-5.3, -3, materials.cream], [-5.5, -1, materials.blue]]) meshBox(building, [1.2, .45, 1.2], [x, .75, z], mat, "leseecke");
   meshBox(building, [5, 2.6, .55], [-4, 1.4, -4.2], materials.woodLight, "leseecke");
   for (let row = 0; row < 5; row++) for (let col = 0; col < 10; col++) meshBox(building, [.28, .34, .13], [-5.8 + col * .4, .55 + row * .39, -3.88], [materials.coral, materials.blue, materials.yellow, materials.sage][(row + col) % 4], "leseecke");
+  buildStoryScene(building);
 
   meshBox(building, [3.8, 2.4, 1.2], [7.2, 1.2, 6.6], materials.cream, "rollenspiel");
   meshBox(building, [1.4, 1.35, 1.2], [5.4, .7, 4.6], materials.woodLight, "rollenspiel");
@@ -850,6 +1008,7 @@ function buildInterior() {
   for (let i = 0; i < 15; i++) meshCylinder(music, .3 + (i % 3) * .08, .55, [26.7, .75 + Math.floor(i / 5) * 1.0, -38.3 + (i % 5) * 1.35], [materials.coral, materials.yellow, materials.blue][i % 3], "orffregal", [0, 0, Math.PI / 2]);
   addGuitar(music, 17.2, -42.6);
   for (let i = 0; i < 8; i++) meshBox(music, [1.1, .08, 1.35], [18.6 + (i % 4) * 1.35, .28, -34.2 + Math.floor(i / 4) * 1.7], i % 2 ? materials.cream : materials.yellow, "klanggeschichte");
+  addRhythmicsScene(music);
 
   const rest = new THREE.Group(); scene.add(rest);
   meshBox(rest, [10, .1, 6], [0, .2, -40], materials.sage, "ruheraum");

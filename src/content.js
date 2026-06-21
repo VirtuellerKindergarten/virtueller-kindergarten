@@ -70,7 +70,7 @@ export const objectInfo = {
         sources: ["Frühe mathematische Bildung", "Technikbildung im Kindergarten"]
       },
       leseecke: {
-        title: "Leseecke und Bücherregal",
+        title: "Lesebereich und Bücherregal",
         images: ["assets/references/lesebereich-canopy.jpg", "assets/references/lesebereich-hell.jpg"],
         description: "Ruhiger Literacy-Bereich mit Bilderbüchern, Gesprächsanlässen und Rückzugsmöglichkeit.",
         minimum: ["Mindestens 50 Bücher: Bilder- und Wimmelbücher, Sachbücher, Märchen, fantastische Geschichten, mehrsprachige Bücher, Bücher über Religionen und Weltanschauungen sowie Liederbücher.", "Entspannendes Mobiliar wie Teppich, Couch oder Sitzkissen, Pölster und Decken.", "Bildkarten und Buchstaben sowie Hand- und Fingerpuppen als Sprachfördermaterialien."],
@@ -80,13 +80,48 @@ export const objectInfo = {
         prep: "gering",
         duration: "10 bis 30 Minuten",
         season: "ganzjährig",
-        group: "Einzelkind bis Kleingruppe",
+        group: "Einzelbeschäftigung bis Kleingruppe",
         goals: ["Wortschatz erweitern", "Dialogisches Lesen anregen", "Empathie und Perspektivenübernahme fördern"],
         variations: ["Buch der Woche", "Bilderbuchkino", "Kinder erzählen mit Figuren weiter"],
         tips: ["Bücher frontal sichtbar präsentieren.", "Mehrsprachigkeit sichtbar und wertschätzend einbinden."],
         safety: ["Rückzug respektieren", "Bücher altersgerecht auswählen"],
         documentation: ["Lieblingsbücher der Kinder sammeln", "Sprachliche Beobachtungen festhalten"],
         sources: ["Literacy in der frühen Kindheit", "Dialogisches Lesen"]
+      },
+      schauplatzgestaltung: {
+        title: "Schauplatzgestaltung",
+        images: ["assets/schauplatz/schauplatz.jpeg"],
+        description: "Eine Bilderbuchgeschichte wird mit Figuren, Naturmaterialien und einer gestalteten Miniaturlandschaft sichtbar, begreifbar und gemeinsam bespielbar gemacht.",
+        theory: [
+          "Die Methode verbindet Sprache, Handlung und Material. Kinder verfolgen das Geschehen im Raum und erhalten visuelle sowie haptische Zugänge zur Geschichte.",
+          "Ausgangspunkt ist ein Bilderbuch mit klaren Handlungsorten. Der Schauplatz zeigt zentrale Orte und Figuren, verändert sich beim Erzählen und bleibt für das selbstständige Nachspielen zugänglich.",
+          "Die elementarpädagogische Fachperson lädt zum Entdecken ein, bewegt Figuren passend zur Erzählung und öffnet den Verlauf für Ideen, Perspektiven und neue Erzählstränge der Kinder."
+        ],
+        documents: [
+          { type: "DOCX", title: "Beispielplanung mit Erklärungen", note: "Ausführliches Planungskonzept mit Einstimmung, Hauptteil, Ausklang, Differenzierung und Reflexion", href: "assets/schauplatz/Beispielplanung_Schauplatzgestaltung.docx" },
+          { type: "DOCX", title: "Handout Schauplatzgestaltung", note: "Definition, Bedeutung, methodisches Vorgehen und geförderte Kompetenzen", href: "assets/schauplatz/Handout_Schauplatzgestaltung.docx" },
+          { type: "PDF", title: "Rezept für eine gelungene Schauplatzgestaltung", note: "Kompakter Praxisimpuls zur Vorbereitung und Umsetzung", href: "assets/schauplatz/Rezept_Schauplatzgestaltung.pdf" }
+        ],
+        areas: ["Sprache und Kommunikation", "Ästhetik und Gestaltung", "Emotionen und soziale Beziehungen"],
+        age: "3 bis 6 Jahre",
+        material: "Bilderbuch, Teppich, Figuren, Miniaturbäume, Sträucher, Fluss- und Landschaftselemente, Naturmaterialien und Tücher",
+        prep: "mittel bis hoch",
+        duration: "20 bis 45 Minuten; anschließend frei bespielbar",
+        season: "ganzjährig und themenbezogen",
+        group: "Kleingruppe bis Teilgruppe",
+        goals: ["Geschichten verstehen und in eigenen Worten weitererzählen", "Perspektiven und Gefühle von Figuren nachvollziehen", "Szene gemeinsam gestalten und Handlungsverläufe aushandeln"],
+        competencies: {
+          self: ["Eigene Vorstellungen und Gefühle zur Geschichte ausdrücken.", "Eine passende Rolle oder Aufgabe selbstständig wählen und ausgestalten."],
+          social: ["Ideen anderer aufgreifen, Rollen absprechen und gemeinsam erzählen.", "An den Gefühlen und Handlungen der Figuren sowie anderer Kinder Anteil nehmen."],
+          subject: ["Figuren, Orte und zeitliche Abläufe einer Geschichte erkennen, benennen und ordnen.", "Materialien symbolisch einsetzen und sprachliche Zusammenhänge herstellen."],
+          learningMethod: ["Erkennen, wie Bilderbuch, Erzählung und gestaltete Szene einander ergänzen.", "Bekannte Handlungsmuster auf neue Geschichten und Materialien übertragen."],
+          meta: ["Das eigene Verständnis der Geschichte überprüfen und durch Nachfragen oder Nachspielen erweitern.", "Mit Unterstützung eine Aufgabe in der Zone der nächsten Entwicklung wählen."]
+        },
+        variations: ["Schauplatz gemeinsam aufbauen", "Figuren- oder Schattentheater", "Geschichte verändern oder weiterdenken", "Naturklänge und Musik integrieren"],
+        tips: ["Die Szene zunächst abdecken und gemeinsam enthüllen.", "Nach dem Erzählen Zeit für selbstgesteuertes Nachspielen lassen."],
+        safety: ["Kleinteile altersgerecht auswählen", "Laufwege um den Teppich freihalten"],
+        documentation: ["Kinderzitate und neue Erzählideen festhalten", "Veränderungen des Schauplatzes fotografisch dokumentieren"],
+        sources: ["Handout Schauplatzgestaltung in der Elementarpädagogik", "Beispielplanung Schauplatzgestaltung Bernhardt"]
       },
       rollenspiel: {
         title: "Rollenspielbereich",
@@ -267,8 +302,39 @@ export const objectInfo = {
         documentation: ["Forscherprotokoll mit Zeichnungen", "Vorher-Nachher-Fotos"],
         sources: ["Handout Didaktik MINT", "Handout Bedeutung früher MINT-Bildung", "Präsentation MINT-Bildung Bernhardt Kolleg", "Stiftung Haus der kleinen Forscher (2012)", "Fthenakis (2009)", "OECD (2020)", "Entdeckendes Lernen"]
       },
+      lerntabletts: {
+        title: "Mathematische Lerntabletts",
+        images: ["assets/mint/lerntablett-formen.jpeg", "assets/mint/lerntablett-mengen-vergleichen.jpeg", "assets/mint/lerntablett-zahlen.jpeg"],
+        description: "Übersichtliche Tabletts laden zum Sortieren, Zählen, Vergleichen, Messen und Legen mit Natur- und Alltagsmaterialien ein.",
+        areas: ["Natur und Technik", "Ästhetik und Gestaltung", "Sprache und Kommunikation"], age: "3 bis 6 Jahre",
+        material: "Holztabletts, Ziffern, Würfel, Naturmaterialien, geometrische Formen, Messwerkzeuge und Aufgabenkarten", prep: "gering bis mittel", duration: "10 bis 25 Minuten", season: "ganzjährig", group: "Einzelbeschäftigung oder Tandemtätigkeit",
+        goals: ["Mengen erfassen und vergleichen", "Formen und Muster untersuchen", "Mathematische Beobachtungen versprachlichen"],
+        variations: ["Zahlen und Mengen zuordnen", "Formen mit Steinen nachlegen", "Gewicht und Länge vergleichen"],
+        tips: ["Je Tablett eine klar erkennbare Aufgabe anbieten.", "Mehrere Lösungswege offenhalten."], safety: ["Kleinteile altersangemessen einsetzen", "Naturmaterialien prüfen"], documentation: ["Lösungsstrategien beobachten", "Kinder ihre Regel erklären lassen"], sources: ["Frühe mathematische Bildung"]
+      },
+      waschbecken: {
+        title: "Waschbecken auf Kinderhöhe", description: "Drei gut erreichbare Waschplätze unterstützen selbstständige Hygiene und bewusste Wassernutzung.",
+        areas: ["Bewegung und Gesundheit", "Natur und Technik"], age: "2 bis 6 Jahre", material: "Kindgerechte Waschbecken, Armaturen, Seife und Handtücher", prep: "laufende Hygiene", duration: "individuell", season: "ganzjährig", group: "Einzelbeschäftigung bis Kleingruppe",
+        goals: ["Hände selbstständig waschen", "Wasser bewusst dosieren", "Hygieneroutinen verstehen"], variations: ["Bildfolge zum Händewaschen"], tips: ["Alles sichtbar und erreichbar anbieten."], safety: ["Rutschfesten Boden und Temperaturbegrenzung sicherstellen"], documentation: ["Selbstständigkeit beobachten"], sources: ["Gesundheitsbildung"]
+      },
+      kindertoilette: {
+        title: "Kindgerechte Toilettenkabinen", description: "Vier geschützte Kabinen verbinden Privatsphäre, gute Erreichbarkeit und selbstständige Körperpflege.",
+        areas: ["Bewegung und Gesundheit", "Ethik und Gesellschaft", "Emotionen und soziale Beziehungen"], age: "2 bis 6 Jahre", material: "Vier Toiletten auf Kinderhöhe, Kabinentüren und leicht erreichbare Spülung", prep: "laufende Reinigung", duration: "individuell", season: "ganzjährig", group: "Einzelbeschäftigung",
+        goals: ["Körpersignale wahrnehmen", "Intimsphäre achten", "Toilettenroutine selbstständig bewältigen"], variations: ["Piktogramme für Handlungsschritte"], tips: ["Hilfe ankündigen und bedarfsgerecht geben."], safety: ["Notöffnung ermöglichen", "Quetschstellen vermeiden"], documentation: ["Entwicklung sensibel dokumentieren"], sources: ["Kinderrechte und beziehungsvolle Pflege"]
+      },
+      dusche: {
+        title: "Kindgerechte Dusche", description: "Eine bodennahe Dusche ermöglicht Reinigung nach Wasser-, Sand- und Matschaktivitäten.",
+        areas: ["Bewegung und Gesundheit", "Emotionen und soziale Beziehungen"], age: "2 bis 6 Jahre", material: "Bodengleiche Dusche, Handbrause, Rutschschutz und Sichtschutz", prep: "bei Bedarf", duration: "individuell", season: "ganzjährig", group: "Einzelbeschäftigung mit Fachperson",
+        goals: ["Körperpflege sicher erleben", "Bedürfnisse und Grenzen ausdrücken"], variations: ["Füße nach dem Garten reinigen"], tips: ["Ablauf und Berührungen ankündigen."], safety: ["Rutschschutz, Temperaturbegrenzung und Aufsicht"], documentation: ["Keine Bilddokumentation in Pflegesituationen"], sources: ["Beziehungsvolle Pflege"]
+      },
+      trockenbereich: {
+        title: "Trockenbereich für Kleidung", description: "Bank, Haken und Trockenstange schaffen Platz für nasse Gartenkleidung und Wechselwäsche.",
+        areas: ["Bewegung und Gesundheit", "Ethik und Gesellschaft"], age: "2 bis 6 Jahre", material: "Sitzbank, Haken, Trockenstange und Wechselkleidung", prep: "gering", duration: "5 bis 15 Minuten", season: "ganzjährig", group: "Einzelbeschäftigung bis Kleingruppe",
+        goals: ["Kleidung selbstständig ordnen", "Verantwortung für eigene Dinge übernehmen"], variations: ["Bildsymbole für Kleidungsstücke"], tips: ["Plätze eindeutig kennzeichnen."], safety: ["Abgerundete Haken", "Nasse Wege trocknen"], documentation: ["Selbstständigkeit beobachten"], sources: ["Alltagskompetenzen"]
+      },
       musik: {
         title: "Musikbereich",
+        images: ["assets/musik/rhythmikeinheit.jpeg"],
         description: "Klangraum für Rhythmik, Singen, Instrumente, Bewegung und Hörwahrnehmung.",
         minimum: ["Eine Gitarre und 15 ORFF-Instrumente, darunter Rahmen-, Schellen- und Holzblocktrommel, Becken, Triangel und Klangstäbe mit Schlegeln.", "15 Paar Klanghölzer sowie 15 verschiedene Rasseln und Schellenbäume oder -bänder.", "25 Chiffon- oder Tülltücher sowie CD-Player und verschiedene CDs."],
         theory: [
@@ -299,6 +365,15 @@ export const objectInfo = {
         safety: ["Lautstärke begrenzen", "Instrumente pfleglich und sicher lagern"],
         documentation: ["Liederrepertoire dokumentieren", "Kinderkompositionen aufnehmen"],
         sources: ["Präsentation: Singen und Musizieren mit Kindern, SJ 2023/24", "Bachner et al. (2021): Musik. Gute Interaktionsqualität sichern und sprachlich begleiten", "Musikalische Frühförderung", "Rhythmik in der Elementarpädagogik"]
+      },
+      rhythmik: {
+        title: "Rhythmikeinheit im Musikbereich",
+        images: ["assets/musik/rhythmikeinheit.jpeg"],
+        description: "Eine vorbereitete Kreismitte verbindet Instrumente, Tücher, Bewegung, Wahrnehmung und gemeinsames musikalisches Gestalten.",
+        areas: ["Ästhetik und Gestaltung", "Bewegung und Gesundheit", "Emotionen und soziale Beziehungen"], age: "3 bis 6 Jahre",
+        material: "ORFF-Instrumente, gestaltete Kreismitte, Chiffontücher, Sitzkissen und Naturmaterialien", prep: "mittel", duration: "20 bis 35 Minuten", season: "ganzjährig", group: "Kleingruppe bis Teilgruppe",
+        goals: ["Musik und Bewegung verbinden", "Rhythmische Muster gestalten", "Gemeinsam beginnen, pausieren und ausklingen"],
+        variations: ["Bewegung mit Tüchern", "Instrumentenwechsel", "Klang und Stille"], tips: ["Instrumente zuerst frei erkunden lassen."], safety: ["Bewegungsabstand schaffen", "Lautstärke regulieren"], documentation: ["Rhythmische Ideen der Kinder notieren"], sources: ["Rhythmik in der Elementarpädagogik"]
       },
       gitarre: {
         title: "Gitarre",
