@@ -640,11 +640,36 @@ function addWallTattoo(parent, src, position, width, height, rotationY, infoKey)
     tattoo.rotation.y = rotationY;
     tattoo.scale.set(width, height, 1);
     tattoo.renderOrder = 4;
-    tattoo.userData.infoKey = infoKey;
     parent.add(tattoo);
-    interactiveMeshes.push(tattoo);
+    if (infoKey) {
+      tattoo.userData.infoKey = infoKey;
+      interactiveMeshes.push(tattoo);
+    }
     invalidate();
   }).catch(error => console.warn(`Wandtattoo konnte nicht geladen werden: ${src}`, error));
+}
+
+function addSurfaceDecal(parent, src, position, width, depth, rotationY, infoKey) {
+  wallTattooTexture(src).then(texture => {
+    const decal = new THREE.Mesh(unitPlane, new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      alphaTest: .035,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      toneMapped: false
+    }));
+    decal.position.set(...position);
+    decal.rotation.set(-Math.PI / 2, 0, rotationY);
+    decal.scale.set(width, depth, 1);
+    decal.renderOrder = 5;
+    parent.add(decal);
+    if (infoKey) {
+      decal.userData.infoKey = infoKey;
+      interactiveMeshes.push(decal);
+    }
+    invalidate();
+  }).catch(error => console.warn(`Ateliergrafik konnte nicht geladen werden: ${src}`, error));
 }
 
 function buildOffices() {
@@ -865,18 +890,18 @@ function buildSanitationZone(parent) {
   }
 
   // Dusche mit transparenter Abtrennung und unmittelbar anschließendem Trockenbereich.
-  meshBox(parent, [3.4, .18, 3.5], [-31.3, .25, -49.2], materials.cream, "dusche");
-  meshBox(parent, [.1, 2.5, 3.5], [-29.62, 1.38, -49.2], materials.glass, "dusche");
-  meshBox(parent, [3.4, 2.5, .1], [-31.3, 1.38, -50.92], materials.glass, "dusche");
-  meshCylinder(parent, .07, 2.2, [-32.65, 1.45, -50.55], materials.metal, "dusche");
-  meshCylinder(parent, .25, .12, [-32.65, 2.48, -50.3], materials.metal, "dusche", [Math.PI / 2, 0, 0]);
-  meshCylinder(parent, .1, .05, [-31.3, .36, -49.2], materials.dark, "dusche");
+  meshBox(parent, [3.4, .18, 3.5], [-16.4, .25, -48.8], materials.cream, "dusche");
+  meshBox(parent, [.1, 2.5, 3.5], [-14.72, 1.38, -48.8], materials.glass, "dusche");
+  meshBox(parent, [3.4, 2.5, .1], [-16.4, 1.38, -50.52], materials.glass, "dusche");
+  meshCylinder(parent, .07, 2.2, [-17.75, 1.45, -50.15], materials.metal, "dusche");
+  meshCylinder(parent, .25, .12, [-17.75, 2.48, -49.9], materials.metal, "dusche", [Math.PI / 2, 0, 0]);
+  meshCylinder(parent, .1, .05, [-16.4, .36, -48.8], materials.dark, "dusche");
 
-  meshBox(parent, [4.8, .42, 1.15], [-26.1, .38, -49.3], materials.woodLight, "trockenbereich");
-  meshCylinder(parent, .08, 3.1, [-27.8, 1.75, -51.0], materials.metal, "trockenbereich");
-  meshCylinder(parent, .08, 3.1, [-24.4, 1.75, -51.0], materials.metal, "trockenbereich");
-  meshBox(parent, [3.5, .1, .1], [-26.1, 2.9, -51.0], materials.metal, "trockenbereich");
-  for (let i = 0; i < 5; i++) meshBox(parent, [.58, 1.05, .08], [-27.45 + i * .68, 2.25, -50.94], [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet][i], "trockenbereich");
+  meshBox(parent, [4.8, .42, 1.15], [-21.5, .38, -48.9], materials.woodLight, "trockenbereich");
+  meshCylinder(parent, .08, 3.1, [-23.2, 1.75, -50.6], materials.metal, "trockenbereich");
+  meshCylinder(parent, .08, 3.1, [-19.8, 1.75, -50.6], materials.metal, "trockenbereich");
+  meshBox(parent, [3.5, .1, .1], [-21.5, 2.9, -50.6], materials.metal, "trockenbereich");
+  for (let i = 0; i < 5; i++) meshBox(parent, [.58, 1.05, .08], [-22.85 + i * .68, 2.25, -50.54], [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet][i], "trockenbereich");
 }
 
 function addLearningTrays(parent) {
@@ -1200,8 +1225,61 @@ function buildInterior() {
   for (let i = 0; i < 18; i++) meshSphere(atelier, .16 + (i % 3) * .06, [-24 + (i % 6) * 1.1, 1.5 + Math.floor(i / 6) * .65, -23.45], [materials.coral, materials.blue, materials.yellow, materials.sage][i % 4], "malwand");
   meshBox(atelier, [1.0, 3.2, 5.4], [-25.5, 1.6, -18], materials.woodDark, "materialschrank");
   for (let i = 0; i < 8; i++) meshBox(atelier, [.15, .65, 1.05], [-24.92, .9 + Math.floor(i / 4) * .95, -20 + (i % 4) * 1.3], [materials.coral, materials.blue, materials.yellow, materials.sage][i % 4], "materialschrank");
-  meshBox(atelier, [.25, 2.6, 2], [-17.5, 1.3, -12.5], materials.woodDark, "staffelei");
-  meshBox(atelier, [.12, 2.3, 2], [-17.3, 1.9, -12.5], materials.cream, "staffelei");
+  meshBox(atelier, [.25, 2.6, 2], [-36.3, 1.3, -20.4], materials.woodDark, "staffelei");
+  meshBox(atelier, [.12, 2.3, 2], [-36.08, 1.9, -20.4], materials.cream, "staffelei");
+
+  // Zwei weitere Staffeleien für paralleles, selbstständiges Arbeiten.
+  for (const z of [-16.9, -9.4]) {
+    meshBox(atelier, [.25, 2.7, 2.15], [-36.3, 1.38, z], materials.woodDark, "staffelei");
+    meshBox(atelier, [.12, 2.35, 2.0], [-36.08, 1.95, z], materials.cream, "staffelei");
+    meshBeam(atelier, [-36.3, .1, z - 1.0], [-36.3, 2.55, z], .1, materials.woodDark, "staffelei");
+    meshBeam(atelier, [-36.3, .1, z + 1.0], [-36.3, 2.55, z], .1, materials.woodDark, "staffelei");
+  }
+
+  // Kleine Pinsel und Farbbecher auf dem Ateliertisch.
+  for (let i = 0; i < 12; i++) {
+    const brush = new THREE.Group();
+    brush.position.set(-23.1 + (i % 6) * .78, 1.3, -13.95 + Math.floor(i / 6) * .78);
+    brush.rotation.y = -.55 + (i % 4) * .34;
+    atelier.add(brush);
+    meshCylinder(brush, .045, .82, [0, 0, 0], [materials.coral, materials.yellow, materials.blue, materials.sage][i % 4], "pinsel", [0, 0, Math.PI / 2]);
+    meshBox(brush, [.24, .09, .09], [.46, 0, 0], materials.metal, "pinsel");
+    meshBox(brush, [.22, .16, .11], [.68, 0, 0], materials.woodDark, "pinsel");
+  }
+  for (const [x, material] of [[-22.6, materials.coral], [-21.5, materials.yellow], [-20.4, materials.blue], [-19.3, materials.sage]]) {
+    meshCylinder(atelier, .28, .34, [x, 1.38, -12.95], material, "pinsel");
+  }
+
+  // Großes Atelierwaschbecken mit Doppelbecken und langem Schwenkhahn.
+  meshBox(atelier, [5.0, 1.3, 2.15], [-31.6, .72, -21.2], materials.woodLight, "atelierwaschbecken");
+  meshBox(atelier, [4.65, .22, 1.82], [-31.6, 1.46, -21.2], materials.metal, "atelierwaschbecken");
+  for (const x of [-32.75, -30.45]) {
+    meshBox(atelier, [1.85, .07, 1.25], [x, 1.58, -21.2], materials.water, "atelierwaschbecken");
+    meshCylinder(atelier, .08, .82, [x, 1.94, -22.0], materials.metal, "atelierwaschbecken");
+    meshCylinder(atelier, .08, .62, [x, 2.32, -21.72], materials.metal, "atelierwaschbecken", [Math.PI / 2, 0, 0]);
+  }
+
+  // Malmäntel auf Kinderhöhe neben dem Waschplatz.
+  meshBox(atelier, [.2, .2, 6.0], [-34.4, 3.15, -14.2], materials.woodDark, "malmaentel");
+  for (let i = 0; i < 5; i++) {
+    const z = -16.5 + i * 1.15;
+    meshCylinder(atelier, .07, .45, [-34.22, 2.92, z], materials.metal, "malmaentel", [0, 0, Math.PI / 2]);
+    meshBox(atelier, [.18, 1.65, .92], [-34.02, 2.05, z], [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet][i], "malmaentel");
+    meshBox(atelier, [.16, .5, .34], [-33.9, 2.25, z - .62], materials.cream, "malmaentel", [0, 0, -.5]);
+    meshBox(atelier, [.16, .5, .34], [-33.9, 2.25, z + .62], materials.cream, "malmaentel", [0, 0, .5]);
+  }
+
+  // Transparente Ateliergrafiken an Wand und Tisch.
+  addWallTattoo(atelier, "assets/atelier/farbe-und-pinsel.png", [-12.39, 3.25, -14.2], 4.4, 2.62, -Math.PI / 2, null);
+  addWallTattoo(atelier, "assets/atelier/pinsel-modern.png", [-12.39, 3.25, -8.9], 2.8, 3.03, -Math.PI / 2, null);
+  addWallTattoo(atelier, "assets/atelier/pinselbecher.png", [-18.75, 2.02, -13.5], .76, 1.62, 0, null);
+  addSurfaceDecal(atelier, "assets/atelier/palette-modern.png", [-22.25, 1.205, -13.45], 1.55, 1.24, -.2, null);
+  addSurfaceDecal(atelier, "assets/atelier/palette-aquarell.png", [-19.7, 1.208, -13.5], 1.85, 1.2, .18, null);
+  addSurfaceDecal(atelier, "assets/atelier/farbspritzer.png", [-21.05, 1.212, -14.15], 1.75, .94, -.08, null);
+
+  // Neue Wandgestaltung auf der Atelierseite der Trennwand zum Forscherbereich.
+  addWallTattoo(atelier, "assets/atelier/wandbild-galerie.png", [-27.75, 2.75, -26.78], 7.2, 4.05, 0, null);
+  addWallTattoo(atelier, "assets/atelier/wandbild-katze.png", [-20.15, 2.75, -26.78], 6.5, 4.35, 0, null);
 
   const movement = new THREE.Group(); scene.add(movement);
   meshBox(movement, [26, .42, 20], [24, .31, -15], materials.blue, "bewegung");
@@ -1431,7 +1509,7 @@ const roomTargets = [
   ["Gruppenraum", "gruppenraum", [0, 4.4, 13], 0],
   ["Atelier", "atelier", [-21, 4.4, -8], 0],
   ["Bewegungsraum", "bewegung", [21, 4.4, -8], 0],
-  ["Forschen", "forscherraum", [-22, 4.4, -27], 0],
+  ["Forschen", "forscherraum", [-23.5, 4.2, -30.5], 0, -.24],
   ["Musik", "musik", [22, 4.4, -27], 0],
   ["Morgenkreis", "morgenkreis", [24, 4.2, -45], 0, -.28],
   ["Ruhe", "ruheraum", [0, 4.4, -32], 0],
