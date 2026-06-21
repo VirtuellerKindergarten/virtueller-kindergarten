@@ -1085,6 +1085,89 @@ function buildCafeteriaKitchen() {
   makeLabel("Offene Küche", [29.4, 5.0, 9.3], 3.5);
 }
 
+const informationBoardData = {
+  title: "Heute bei uns",
+  date: "Datum",
+  weather: "Wetter",
+  meal: "Speiseplan",
+  appointments: ["Termin / Aktivität", "Abholinformation", "Mitteilung an Familien"],
+  photoLabels: ["Kinderfoto", "Kinderfoto", "Kinderfoto", "Kinderfoto"]
+};
+
+function buildInformationBoard() {
+  const board = new THREE.Group();
+  board.position.set(11.98, 3.05, 10);
+  board.rotation.y = -Math.PI / 2;
+  scene.add(board);
+
+  meshBox(board, [8.7, 4.15, .22], [0, 0, 0], materials.woodDark, "infoboard");
+  meshBox(board, [8.25, 3.72, .14], [0, 0, .15], materials.dark, "infoboard");
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1400;
+  canvas.height = 640;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#202726";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#f7f1df";
+  ctx.font = "700 54px Arial";
+  ctx.fillText(informationBoardData.title, 48, 68);
+  ctx.fillStyle = "#9fc9bd";
+  ctx.fillRect(48, 88, 1304, 5);
+
+  const card = (x, y, width, height, title, body, color) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, width, height);
+    ctx.fillStyle = "#20302e";
+    ctx.font = "700 27px Arial";
+    ctx.fillText(title, x + 22, y + 42);
+    ctx.fillStyle = "#4a5754";
+    ctx.font = "22px Arial";
+    ctx.fillText(body, x + 22, y + 82);
+  };
+  card(48, 120, 245, 118, informationBoardData.date, "TT. MM. JJJJ", "#f4d469");
+  card(315, 120, 245, 118, informationBoardData.weather, "Sonne / Wolken", "#a9d4e8");
+  card(582, 120, 310, 118, informationBoardData.meal, "Heutige Mahlzeit", "#b9d39c");
+
+  ctx.fillStyle = "#f7f1df";
+  ctx.font = "700 28px Arial";
+  ctx.fillText("Aktuelle Informationen", 48, 292);
+  informationBoardData.appointments.forEach((text, index) => {
+    const y = 322 + index * 78;
+    ctx.fillStyle = ["#f1b8a8", "#e7d8a6", "#b7d5cf"][index];
+    ctx.fillRect(48, y, 844, 58);
+    ctx.fillStyle = "#263431";
+    ctx.font = "22px Arial";
+    ctx.fillText(text, 72, y + 37);
+  });
+
+  ctx.fillStyle = "#f7f1df";
+  ctx.font = "700 28px Arial";
+  ctx.fillText("Fotos aus unserem Alltag", 938, 132);
+  informationBoardData.photoLabels.forEach((label, index) => {
+    const x = 938 + (index % 2) * 202;
+    const y = 160 + Math.floor(index / 2) * 210;
+    ctx.fillStyle = ["#d8b4bb", "#a9c7dc", "#d9c77d", "#a7c69f"][index];
+    ctx.fillRect(x, y, 176, 158);
+    ctx.fillStyle = "rgba(255,255,255,.72)";
+    ctx.beginPath(); ctx.arc(x + 88, y + 58, 30, 0, Math.PI * 2); ctx.fill();
+    ctx.fillRect(x + 48, y + 94, 80, 36);
+    ctx.fillStyle = "#2b3936";
+    ctx.font = "18px Arial";
+    ctx.fillText(label, x + 43, y + 148);
+  });
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  const display = new THREE.Mesh(unitPlane, new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }));
+  display.position.set(0, 0, .235);
+  display.scale.set(7.9, 3.42, 1);
+  display.userData.infoKey = "infoboard";
+  board.add(display);
+  interactiveMeshes.push(display);
+}
+
 function buildInterior() {
   const entrance = new THREE.Group(); scene.add(entrance);
   meshBox(entrance, [4, .25, 2.4], [5.8, .82, 16], materials.woodLight, "eingang");
@@ -1094,6 +1177,7 @@ function buildInterior() {
 
   buildOffices();
   buildCafeteriaKitchen();
+  buildInformationBoard();
 
   const building = new THREE.Group(); scene.add(building);
   meshBox(building, [7.5, .08, 5.2], [-5.2, .2, 6.5], materials.blue, "bauteppich");
@@ -1120,11 +1204,39 @@ function buildInterior() {
   meshBox(atelier, [.12, 2.3, 2], [-17.3, 1.9, -12.5], materials.cream, "staffelei");
 
   const movement = new THREE.Group(); scene.add(movement);
-  meshBox(movement, [12, .1, 8], [21, .22, -14], materials.blue, "bewegung");
-  for (const z of [-20, -16]) meshBox(movement, [.24, 4.2, .24], [29.2, 2.3, z], materials.woodDark, "bewegungsausstattung");
-  for (let i = 0; i < 10; i++) meshBox(movement, [.26, .12, 4], [29.1, .6 + i * .38, -18], materials.woodLight, "bewegungsausstattung");
-  meshBox(movement, [3.2, 1.5, 2.3], [16.5, .78, -18.5], materials.wood, "bewegungsausstattung");
-  meshBox(movement, [5.2, .75, 3.1], [22, .45, -19.5], materials.blue, "bewegungsausstattung");
+  meshBox(movement, [26, .42, 20], [24, .31, -15], materials.blue, "bewegung");
+
+  // Drei Sprossenwände an der Trennwand zum Schauplatzbereich.
+  for (const centerZ of [-8.2, -12, -15.8]) {
+    for (const dz of [-1.42, 1.42]) meshBox(movement, [.3, 4.35, .3], [12.48, 2.38, centerZ + dz], materials.woodDark, "kletterparcours");
+    for (let i = 0; i < 10; i++) meshBox(movement, [.34, .13, 2.82], [12.62, .72 + i * .39, centerZ], materials.woodLight, "kletterparcours");
+  }
+
+  // Niedrige Rutsche von der mittleren Sprossenwand auf die Fallschutzmatte.
+  meshBox(movement, [6.8, .18, 1.7], [16.0, 1.58, -12], materials.yellow, "kletterparcours", [0, 0, -.42]);
+  for (const dz of [-.82, .82]) meshBox(movement, [6.8, .38, .16], [16.0, 1.76, -12 + dz], materials.woodLight, "kletterparcours", [0, 0, -.42]);
+
+  // Bestehende Sprossenwand weiter zu den großen Fenstern und der Außenmauer versetzt.
+  for (const z of [-20, -16]) meshBox(movement, [.3, 4.5, .3], [36.1, 2.42, z], materials.woodDark, "kletterparcours");
+  for (let i = 0; i < 11; i++) meshBox(movement, [.34, .13, 4], [35.95, .7 + i * .38, -18], materials.woodLight, "kletterparcours");
+
+  // Sportkästen als Zwischenstationen.
+  meshBox(movement, [3.2, 1.5, 2.3], [16.5, .82, -18.5], materials.wood, "kletterparcours");
+  meshBox(movement, [3.4, 1.8, 2.5], [22.2, .96, -19.0], materials.woodLight, "kletterparcours");
+  meshBox(movement, [3.4, 2.15, 2.5], [28.0, 1.14, -18.0], materials.wood, "kletterparcours");
+  meshBox(movement, [3.6, 1.45, 2.6], [33.0, .78, -19.0], materials.woodLight, "kletterparcours");
+
+  // Zwei horizontale Leiterabschnitte verbinden Kästen und Fenster-Sprossenwand.
+  for (const [startX, endX, y, centerZ] of [[18.0, 26.4, 1.7, -18.5], [29.4, 35.7, 2.35, -18.0]]) {
+    for (const dz of [-1.0, 1.0]) meshBeam(movement, [startX, y, centerZ + dz], [endX, y, centerZ + dz], .12, materials.woodDark, "kletterparcours");
+    const rungs = Math.max(5, Math.round((endX - startX) / .72));
+    for (let i = 0; i <= rungs; i++) {
+      const x = startX + (endX - startX) * i / rungs;
+      meshBox(movement, [.14, .14, 2.05], [x, y, centerZ], materials.woodLight, "kletterparcours");
+    }
+  }
+
+  meshBox(movement, [7.2, .78, 3.8], [23, .5, -22.2], materials.blue, "bewegungsausstattung");
   for (const z of [-7.4, -9]) meshBox(movement, [5.6, .32, .75], [20.5, .55, z], materials.woodLight, "bewegungsausstattung");
   for (const [x, z, mat] of [[24.6, -14, materials.coral], [22.1, -13.2, materials.yellow], [26.7, -16.2, materials.sage]]) meshBox(movement, [2, 1.1, 2], [x, .65, z], mat, "bewegungsausstattung");
   for (let i = 0; i < 25; i++) meshSphere(movement, .46, [14 + (i % 5) * .46, .5 + Math.floor(i / 5) * .38, -8], i % 2 ? materials.yellow : materials.blue, "bewegungsausstattung");
@@ -1323,6 +1435,7 @@ const roomTargets = [
   ["Musik", "musik", [22, 4.4, -27], 0],
   ["Morgenkreis", "morgenkreis", [24, 4.2, -45], 0, -.28],
   ["Ruhe", "ruheraum", [0, 4.4, -32], 0],
+  ["Garten Großgeräte", "gartengrossgeraete", [0, 6.2, 55], 0, -.34],
   ["Garten", "garten", [0, 4.4, 58], 0]
 ];
 
@@ -1340,6 +1453,9 @@ let framePending = false;
 let lastFrame = performance.now();
 let roofOpen = false;
 let renderedFrames = 0;
+let cameraTravel = null;
+let lastTouchTap = { time: 0, x: 0, y: 0 };
+let touchSelectionTimer = 0;
 
 function setCamera(position, nextYaw = 0, nextPitch = -.08) {
   camera.position.set(...position);
@@ -1411,6 +1527,43 @@ function updateMovement(delta) {
   return true;
 }
 
+function startGroundTravel(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObjects(interactiveMeshes, false)[0];
+  if (!hit || hit.point.y > .85) return false;
+
+  const targetX = THREE.MathUtils.clamp(hit.point.x, -53, 53);
+  const targetZ = THREE.MathUtils.clamp(hit.point.z, -68, 78);
+  const distance = Math.hypot(targetX - camera.position.x, targetZ - camera.position.z);
+  if (distance < .8) return false;
+  cameraTravel = {
+    fromX: camera.position.x,
+    fromZ: camera.position.z,
+    targetX,
+    targetZ,
+    startedAt: performance.now(),
+    duration: THREE.MathUtils.clamp(distance * 42, 360, 1050)
+  };
+  hideInfo();
+  invalidate();
+  return true;
+}
+
+function updateCameraTravel(now) {
+  if (!cameraTravel) return false;
+  const progress = THREE.MathUtils.clamp((now - cameraTravel.startedAt) / cameraTravel.duration, 0, 1);
+  const eased = progress < .5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+  camera.position.x = THREE.MathUtils.lerp(cameraTravel.fromX, cameraTravel.targetX, eased);
+  camera.position.z = THREE.MathUtils.lerp(cameraTravel.fromZ, cameraTravel.targetZ, eased);
+  camera.position.y = 4.4;
+  updateLocation();
+  if (progress >= 1) cameraTravel = null;
+  return progress < 1;
+}
+
 function invalidate() {
   if (framePending) return;
   framePending = true;
@@ -1422,12 +1575,13 @@ function renderFrame(now) {
   const delta = Math.min((now - lastFrame) / 1000, .12);
   lastFrame = now;
   const moving = updateMovement(delta);
+  const traveling = updateCameraTravel(now);
   updateRoof();
   updateLabels();
   camera.rotation.set(pitch, yaw, 0);
   renderer.render(scene, camera);
   renderedFrames++;
-  if (moving || keys.size) invalidate();
+  if (moving || traveling || keys.size) invalidate();
 }
 
 function list(items) { return `<ul>${(items || []).map(item => `<li>${item}</li>`).join("")}</ul>`; }
@@ -1518,6 +1672,7 @@ roomTargets.forEach(([label, key, position, targetYaw, targetPitch]) => {
 window.addEventListener("keydown", event => {
   const key = event.key.toLowerCase();
   if (["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"].includes(key)) {
+    cameraTravel = null;
     keys.add(key); event.preventDefault(); invalidate();
   }
   if (event.key === "Escape") {
@@ -1527,6 +1682,16 @@ window.addEventListener("keydown", event => {
   }
 });
 window.addEventListener("keyup", event => keys.delete(event.key.toLowerCase()));
+
+function selectSceneAt(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObjects(interactiveMeshes, false)[0];
+  const key = hit?.object.userData.instanceInfoKeys?.[hit.instanceId] || hit?.object.userData.infoKey;
+  if (key) showInfo(key);
+}
 
 canvas.addEventListener("pointerdown", event => {
   dragging = true;
@@ -1548,13 +1713,27 @@ canvas.addEventListener("pointerup", event => {
   canvas.classList.remove("dragging");
   const distance = Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y);
   if (distance > 5) return;
-  const rect = canvas.getBoundingClientRect();
-  pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(pointer, camera);
-  const hit = raycaster.intersectObjects(interactiveMeshes, false)[0];
-  const key = hit?.object.userData.instanceInfoKeys?.[hit.instanceId] || hit?.object.userData.infoKey;
-  if (key) showInfo(key);
+  if (event.pointerType === "touch") {
+    const now = performance.now();
+    const closeToLastTap = Math.hypot(event.clientX - lastTouchTap.x, event.clientY - lastTouchTap.y) < 32;
+    if (now - lastTouchTap.time < 380 && closeToLastTap) {
+      clearTimeout(touchSelectionTimer);
+      lastTouchTap.time = 0;
+      startGroundTravel(event.clientX, event.clientY);
+      return;
+    }
+    lastTouchTap = { time: now, x: event.clientX, y: event.clientY };
+    clearTimeout(touchSelectionTimer);
+    const tapX = event.clientX;
+    const tapY = event.clientY;
+    touchSelectionTimer = setTimeout(() => selectSceneAt(tapX, tapY), 390);
+    return;
+  }
+  selectSceneAt(event.clientX, event.clientY);
+});
+canvas.addEventListener("dblclick", event => {
+  event.preventDefault();
+  startGroundTravel(event.clientX, event.clientY);
 });
 canvas.addEventListener("pointercancel", () => { dragging = false; canvas.classList.remove("dragging"); });
 canvas.addEventListener("wheel", event => {
