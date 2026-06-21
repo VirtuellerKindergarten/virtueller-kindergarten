@@ -21,8 +21,13 @@ const documentNote = document.getElementById("documentNote");
 const documentFrame = document.getElementById("documentFrame");
 const closeDocument = document.getElementById("closeDocument");
 
-const bundledOutput = location.protocol === "file:" || location.pathname.endsWith("/outputs/kindergarten-three.html");
-const assetUrl = path => path?.startsWith("assets/") ? (bundledOutput ? path : `../outputs/${path}`) : path;
+const repoBase = location.pathname.includes("/virtueller-kindergarten/")
+  ? "/virtueller-kindergarten/"
+  : "";
+
+const assetUrl = path => path?.startsWith("assets/")
+  ? `${repoBase}outputs/${path}`
+  : path;
 
 let renderer;
 try {
