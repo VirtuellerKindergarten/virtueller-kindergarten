@@ -1,3 +1,4 @@
+
 # Virtueller Kindergarten mit Three.js
 
 Diese Anwendung ist die WebGL-Migration des bisherigen CSS-3D-Kindergartens. Die alte Datei unter `outputs/kindergarten-3d.html` bleibt als Rückfalloption erhalten.
@@ -22,3 +23,4 @@ Danach ist die Anwendung unter `http://127.0.0.1:4173/three-kindergarten/` errei
 - `server.mjs`: lokaler Entwicklungsserver
 
 Dokumente und Referenzbilder werden weiterhin aus `outputs/assets` geladen. Dadurch bleiben beide Versionen inhaltlich synchron nutzbar.
+=======
