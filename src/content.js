@@ -513,7 +513,7 @@ export const objectInfo = {
       },
       morgenkreis: {
         title: "Morgen- und Mittagskreis",
-        images: ["assets/morgenkreis/reise-welt.png"],
+        images: ["src/assets/morgenkreis/reise-welt.png"],
         description: "Ein klar vorbereiteter Sitzkreis mit 23 Kinderpölstern und einem Hocker für die elementarpädagogische Fachperson schafft einen gemeinsamen Ort für Orientierung, Austausch und Beteiligung.",
         areas: ["Emotionen und soziale Beziehungen", "Sprache und Kommunikation", "Ethik und Gesellschaft"],
         age: "2 bis 6 Jahre",
@@ -598,7 +598,7 @@ export const objectInfo = {
         description: "Ein übersichtlicher, frei zugänglicher Kasten ordnet Instrumente nach Klangfamilie und macht selbstständige Auswahl möglich.",
         images: ["assets/klanggeschichten/referenz-stabspiel.png", "assets/klanggeschichten/referenz-ratsche.png"],
         documents: [
-          { type: "PDF", title: "ORFF-Instrumente im Überblick", note: "Instrumentennamen, Abbildungen und passende Spielwerkzeuge", href: "assets/klanggeschichten/ORFF_Instrumente_Ueberblick.pdf" }
+          { type: "PDF", title: "ORFF-Instrumente im Überblick", note: "Instrumentennamen, Abbildungen und passende Spielwerkzeuge", href: "src/assets/klanggeschichten/ORFF_Instrumente_Ueberblick.pdf" }
         ],
         areas: ["Ästhetik und Gestaltung", "Natur und Technik", "Emotionen und soziale Beziehungen"],
         age: "2 bis 6 Jahre",

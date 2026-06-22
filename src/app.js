@@ -1038,7 +1038,7 @@ function buildMorningCircle() {
   for (const dz of [-.38, .38]) for (const dx of [-.38, .38]) meshCylinder(circle, .09, .65, [stoolX + dx, .34, centerZ + dz], materials.woodDark, "morgenkreis");
 
   addMorningCircleShelf(circle);
-  addWallTattoo(circle, "assets/morgenkreis/reise-welt.png", [24, 2.95, -43.19], 7.25, 4.08, Math.PI, "morgenkreis");
+  addWallTattoo(circle, "src/assets/morgenkreis/reise-welt.png", [24, 2.95, -43.19], 7.25, 4.08, Math.PI, "morgenkreis");
   makeLabel("Morgen- und Mittagskreis", [24, 5.35, -49.2], 4.8);
 }
 
@@ -1270,16 +1270,16 @@ function buildInterior() {
   }
 
   // Transparente Ateliergrafiken an Wand und Tisch.
-  addWallTattoo(atelier, "assets/atelier/farbe-und-pinsel.png", [-12.39, 3.25, -14.2], 4.4, 2.62, -Math.PI / 2, null);
-  addWallTattoo(atelier, "assets/atelier/pinsel-modern.png", [-12.39, 3.25, -8.9], 2.8, 3.03, -Math.PI / 2, null);
-  addWallTattoo(atelier, "assets/atelier/pinselbecher.png", [-18.75, 2.02, -13.5], .76, 1.62, 0, null);
-  addSurfaceDecal(atelier, "assets/atelier/palette-modern.png", [-22.25, 1.205, -13.45], 1.55, 1.24, -.2, null);
-  addSurfaceDecal(atelier, "assets/atelier/palette-aquarell.png", [-19.7, 1.208, -13.5], 1.85, 1.2, .18, null);
-  addSurfaceDecal(atelier, "assets/atelier/farbspritzer.png", [-21.05, 1.212, -14.15], 1.75, .94, -.08, null);
+  addWallTattoo(atelier, "src/assets/atelier/farbe-und-pinsel.png", [-12.39, 3.25, -14.2], 4.4, 2.62, -Math.PI / 2, null);
+  addWallTattoo(atelier, "src/assets/atelier/pinsel-modern.png", [-12.39, 3.25, -8.9], 2.8, 3.03, -Math.PI / 2, null);
+  addWallTattoo(atelier, "src/assets/atelier/pinselbecher.png", [-18.75, 2.02, -13.5], .76, 1.62, 0, null);
+  addSurfaceDecal(atelier, "src/assets/atelier/palette-modern.png", [-22.25, 1.205, -13.45], 1.55, 1.24, -.2, null);
+  addSurfaceDecal(atelier, "src/assets/atelier/palette-aquarell.png", [-19.7, 1.208, -13.5], 1.85, 1.2, .18, null);
+  addSurfaceDecal(atelier, "src/assets/atelier/farbspritzer.png", [-21.05, 1.212, -14.15], 1.75, .94, -.08, null);
 
   // Neue Wandgestaltung auf der Atelierseite der Trennwand zum Forscherbereich.
-  addWallTattoo(atelier, "assets/atelier/wandbild-galerie.png", [-27.75, 2.75, -26.78], 7.2, 4.05, 0, null);
-  addWallTattoo(atelier, "assets/atelier/wandbild-katze.png", [-20.15, 2.75, -26.78], 6.5, 4.35, 0, null);
+  addWallTattoo(atelier, "src/assets/atelier/wandbild-galerie.png", [-27.75, 2.75, -26.78], 7.2, 4.05, 0, null);
+  addWallTattoo(atelier, "src/assets/atelier/wandbild-katze.png", [-20.15, 2.75, -26.78], 6.5, 4.35, 0, null);
 
   const movement = new THREE.Group(); scene.add(movement);
   meshBox(movement, [26, .42, 20], [24, .31, -15], materials.blue, "bewegung");
