@@ -47,7 +47,13 @@ export const objectInfo = {
         tips: ["Kinder an Vorbereitung und Tischgestaltung beteiligen.", "Mahlzeiten ohne Zeitdruck und Essenszwang begleiten."],
         safety: ["Laufwege frei halten", "Allergien und Unverträglichkeiten eindeutig berücksichtigen", "Heiße Speisen sicher transportieren"],
         documentation: ["Selbstständigkeit und Gesprächskultur beobachten", "Kinderwünsche in die Speiseplanung aufnehmen"],
-        sources: ["Gesundheitsförderung in elementaren Bildungseinrichtungen", "Partizipative Esskultur"]
+        sources: ["Gesundheitsförderung in elementaren Bildungseinrichtungen", "Partizipative Esskultur"],
+        planningDocuments: [
+          { type: "PDF", title: "Essensituation in der Kita: potentielle Herausforderungen", note: "Fachliche Reflexion zu herausfordernden Esssituationen und pädagogischen Handlungsoptionen", href: "src/assets/essen/Essensituation_Herausforderungen.pdf" },
+          { type: "PDF", title: "Sensible Essensgestaltung", note: "Fachliche Orientierung für eine achtsame, bedürfnisorientierte Esskultur", href: "src/assets/essen/Sensible_Essensgestaltung_Oberoesterreich.pdf" },
+          { type: "PDF", title: "Essenssituationen sprachlich begleiten", note: "Impulse zur alltagsintegrierten Sprachbildung während Mahlzeiten", href: "src/assets/essen/Essenssituationen_sprachlich_begleiten.pdf" },
+          { type: "PDF", title: "Spiele und Impulse rund ums Essen", note: "Didaktische Anregungen für Gespräche, Wahrnehmung und spielerische Ernährungsbildung", href: "src/assets/essen/Spiele_Impulse_rund_ums_Essen.pdf" }
+        ]
       },
       kueche: {
         title: "Offene Küche",
@@ -64,7 +70,11 @@ export const objectInfo = {
         tips: ["Arbeitsabläufe in überschaubare Schritte gliedern.", "Gerätefunktionen vor der Nutzung gemeinsam besprechen."],
         safety: ["Heiße, scharfe und elektrische Geräte nur begleitet verwenden", "Kindersicherungen und Temperaturbegrenzungen einsetzen", "Hygieneplan einhalten"],
         documentation: ["Rezepte mit Bildern dokumentieren", "Hypothesen und Beobachtungen der Kinder festhalten"],
-        sources: ["Ernährungsbildung", "Naturwissenschaftliches Lernen im Alltag"]
+        sources: ["Ernährungsbildung", "Naturwissenschaftliches Lernen im Alltag"],
+        planningDocuments: [
+          { type: "PDF", title: "Essensituation in der Kita: potentielle Herausforderungen", note: "Planungshilfe für achtsame Esssituationen und sensible Begleitung", href: "src/assets/essen/Essensituation_Herausforderungen.pdf" },
+          { type: "PDF", title: "Essenssituationen sprachlich begleiten", note: "Sprachliche Begleitung beim Kochen, Essen und gemeinsamen Reflektieren", href: "src/assets/essen/Essenssituationen_sprachlich_begleiten.pdf" }
+        ]
       },
       kochinsel: {
         title: "Kochinsel auf zwei Arbeitshöhen",
@@ -81,7 +91,37 @@ export const objectInfo = {
         tips: ["Materialien vorab geordnet und erreichbar bereitstellen.", "Kinder möglichst viele sichere Schritte selbst ausführen lassen."],
         safety: ["Rutschfesten Stand gewährleisten", "Mixer nur mit geschlossenem Deckel und unter Begleitung verwenden", "Kochfeld nach Nutzung deutlich sichern"],
         documentation: ["Arbeitsschritte als Fotorezept festhalten", "Kinder ihre Vorgehensweise erklären lassen"],
-        sources: ["Alltagskompetenzen", "Ko-konstruktives Lernen beim Kochen"]
+        sources: ["Alltagskompetenzen", "Ko-konstruktives Lernen beim Kochen"],
+        recipeDocuments: [
+          { type: "PDF", title: "Wir kochen: Kochbuch für Kinder", note: "Kindernahe Rezepte und Kochideen für elementarpädagogische Gruppen", href: "src/assets/essen/Wir_kochen_Kochbuch_fuer_Kinder.pdf" },
+          { type: "PDF", title: "Rezeptmappe Niederösterreich", note: "Sammlung konkreter Rezepte für die pädagogische Kochpraxis", href: "src/assets/essen/Rezeptmappe_NOE.pdf" },
+          { type: "PDF", title: "Gesamte Rezeptmappe: Kochen mit Kindern", note: "Umfangreiche Rezept- und Ideensammlung für das gemeinsame Kochen", href: "src/assets/essen/Gesamte_Rezeptmappe_Kochen_mit_Kindern.pdf" }
+        ]
+      },
+      kochrezepte: {
+        title: "Kinder-Rezeptmappen auf der Anrichte",
+        description: "Die Rezeptmappen liegen auf der niedrigen Anrichte der Kochinsel und sind für Kinder sichtbar und erreichbar. Sie dienen als Ausgangspunkt für gemeinsames Planen, Bildlesen, Zutatenvergleichen und Kochen.",
+        areas: ["Bewegung und Gesundheit", "Sprache und Kommunikation", "Natur und Technik"],
+        age: "3 bis 6 Jahre",
+        material: "Kinderkochbücher, Rezeptmappen, Bildrezepte, Zutatenkarten, Messbecher und Küchenwerkzeuge",
+        prep: "abhängig vom Rezept; Allergien, Hygiene und Gerätebedarf vorab klären",
+        duration: "20 bis 90 Minuten",
+        season: "ganzjährig",
+        group: "Tandemtätigkeit oder Kleingruppe",
+        goals: ["Rezepte als Handlungspläne verstehen", "Zutaten, Mengen und Arbeitsschritte sprachlich erfassen", "Selbstständigkeit und Verantwortung beim Kochen entwickeln"],
+        variations: ["Bildrezept auswählen", "Zutatenkarten sortieren", "Lieblingsrezept der Gruppe dokumentieren", "Kinder fotografieren Arbeitsschritte"],
+        tips: ["Rezepte mit Fotos oder Symbolen markieren.", "Kinder beim Auswählen beteiligen und sichere Arbeitsschritte selbst übernehmen lassen."],
+        safety: ["Allergien und Unverträglichkeiten vorab prüfen", "Hygieneplan einhalten", "Heiße, scharfe und elektrische Geräte nur begleitet verwenden"],
+        documentation: ["Fotorezept", "Kinderzitate zu Geschmack und Zubereitung", "Rezeptbewertung mit Symbolen"],
+        sources: ["Ernährungsbildung", "Alltagsintegrierte Sprachbildung", "Kochen mit Kindern"],
+        recipeDocuments: [
+          { type: "PDF", title: "Wir kochen: Kochbuch für Kinder", note: "Kindernahe Rezepte und Kochideen für elementarpädagogische Gruppen", href: "src/assets/essen/Wir_kochen_Kochbuch_fuer_Kinder.pdf" },
+          { type: "PDF", title: "Rezeptmappe Niederösterreich", note: "Sammlung konkreter Rezepte für die pädagogische Kochpraxis", href: "src/assets/essen/Rezeptmappe_NOE.pdf" },
+          { type: "PDF", title: "Gesamte Rezeptmappe: Kochen mit Kindern", note: "Umfangreiche Rezept- und Ideensammlung für das gemeinsame Kochen", href: "src/assets/essen/Gesamte_Rezeptmappe_Kochen_mit_Kindern.pdf" }
+        ],
+        planningDocuments: [
+          { type: "PDF", title: "Spiele und Impulse rund ums Essen", note: "Didaktische Impulse zur Vor- und Nachbereitung von Koch- und Esssituationen", href: "src/assets/essen/Spiele_Impulse_rund_ums_Essen.pdf" }
+        ]
       },
       infoboard: {
         title: "Tagesaktuelles Informationsbrett",
@@ -211,7 +251,7 @@ export const objectInfo = {
       },
       atelier: {
         title: "Atelier",
-        images: ["assets/references/atelier.jpg"],
+        images: ["assets/references/atelier.jpg", "src/assets/atelier/bodenbild.jpg"],
         description: "Farbiger Werkraum für Malen, Zeichnen, Gestalten, Materialexperimente und ästhetische Forschung.",
         minimum: ["Ausreichend Werk-, Mal- und Zeichenmaterial für mindestens acht unabhängig tätige Kinder sowie Malschürzen oder Malshirts.", "Spritzgitter, fünf Farbroller, Schwämme, Stempel und Spachteln; drei Hämmer, zwei Handbohrer, zwei Sägen, drei Schraubenzieher und drei Schraubstöcke oder Schraubzwingen.", "Verschiedene Papiere, Klebstoffe, Stifte, Farben und Pinsel; zehn Kinderscheren, zwei Linkshänderscheren, zwei Therapeutenscheren und eine große Papierschere.", "Knet- und Modelliermassen, Stoff, Kork, Ton, Wolle, Moosgummi sowie Stopf-, Näh- und Webnadeln."],
         areas: ["Ästhetik und Gestaltung", "Natur und Technik", "Sprache und Kommunikation"],
@@ -334,6 +374,7 @@ export const objectInfo = {
       },
       bewegung: {
         title: "Bewegungsraum",
+        images: ["src/assets/bewegung/zirkus/zirkus-parcours-trampolin.JPG", "src/assets/bewegung/zirkus/zirkus-sprungtuch-matte.JPG"],
         description: "Raum für Psychomotorik, Koordination, Tanz und Bewegungslandschaften.",
         minimum: ["Die Anforderungen gelten pro Bewegungsraum, nicht pro Gruppe.", "Fünf variationsreich kombinierbare Materialien und Turngeräte, darunter Kasten, Leiter und leichte Großelemente wie ein Satz WESCO.", "Eine Sprossenwand, zwei Langbänke mit Einhängehaken, eine Weichbodenmatte und mindestens drei Turnmatten.", "25 Bälle in mindestens zwei Ausführungen mit Luftpumpe sowie je 25 Seile und Gymnastikreifen.", "Gummiseil, Schwungtuch, 25 Sand-, Bohnen- oder Reissäckchen sowie je zwei Rollbretter und Balancierscheiben oder -platten."],
         theory: [
@@ -397,6 +438,30 @@ export const objectInfo = {
         safety: ["Ab einer Fallhöhe von 60 cm alle möglichen Fallbereiche mit geeigneten Matten sichern", "Matten lückenlos und rutschfest verbinden", "Alle Mattenschlaufen unter die Matten legen", "Leitern, Kästen, Rutsche und Sprossenwände vor jeder Nutzung auf festen Sitz prüfen", "Nicht benötigte Laufwege freihalten"],
         documentation: ["Wegewahl und Problemlösungsstrategien beobachten", "Selbsteinschätzungen der Kinder im Anschluss besprechen"],
         sources: ["Grundlagen der Bewegungserziehung", "Bewegungslandschaft als teilangeleitete Bewegungsaktivität"]
+      },
+      zirkuslandschaft: {
+        title: "Bewegungslandschaft Zirkus",
+        images: [
+          "src/assets/bewegung/zirkus/zirkus-sprossenwand-becher.JPG",
+          "src/assets/bewegung/zirkus/zirkus-parcours-trampolin.JPG",
+          "src/assets/bewegung/zirkus/zirkus-sprungtuch-matte.JPG",
+          "src/assets/bewegung/zirkus/zirkus-balance-igel.JPG",
+          "src/assets/bewegung/zirkus/zirkus-klettern-affe.JPG"
+        ],
+        description: "Teilangeleitete Bewegungslandschaft nach Renate Zimmer zum Thema Zirkus. Die Kinder erproben Balancieren, Springen, Klettern, Werfen, Zielgenauigkeit und mutiges Bewegen in einer vorbereiteten, motivierenden Spielhandlung.",
+        areas: ["Bewegung und Gesundheit", "Emotionen und soziale Beziehungen", "Sprache und Kommunikation"],
+        age: "3 bis 6 Jahre",
+        material: "Sprossenwand, Sportkästen, Stepbretter, blaue Matten, Trampolin, Schwungtuch, Reifen, Balanciermaterial, Becher-Zielstation, Bälle und Zirkusbildkarten",
+        prep: "hoch; Aufbau, Sicherheitskontrolle und thematische Impulse vorbereiten",
+        duration: "30 bis 50 Minuten",
+        season: "ganzjährig",
+        group: "Kleingruppe bis Teilgruppe",
+        goals: ["Grundtätigkeiten wie Springen, Balancieren, Klettern und Werfen vielfältig erproben", "Selbstwirksamkeit, Mut und Körpervertrauen stärken", "Eigene Bewegungswege finden und soziale Rücksichtnahme üben"],
+        variations: ["Zirkusdirektor:in führt ein", "Artisten-Parcours mit freier Wegwahl", "Becher-Zielwurf", "Balancierstation mit Igelhalbkugel", "Sprungnummer mit Trampolin und Matten"],
+        tips: ["Den Zirkusrahmen als Spielimpuls nutzen, aber Bewegungswege offenlassen.", "Kinder selbst Schwierigkeitsgrade wählen lassen und nicht zum Absolvieren aller Stationen drängen.", "Kurze Reflexion: Welche Artistennummer war leicht, mutig, schwierig oder besonders spannend?"],
+        safety: ["Alle Sprung- und Fallbereiche lückenlos mit Matten sichern", "Ab 60 cm Fallhöhe geeignete Fallschutzmatten verwenden", "Mattenschlaufen vollständig unter die Matten legen", "Trampolin nur einzeln nutzen", "Geräte vor der Nutzung auf festen Stand prüfen"],
+        documentation: ["Fotos der Stationen als Planungs- und Reflexionsgrundlage", "Beobachtung von Gleichgewicht, Körperspannung, Risikoeinschätzung und Sozialverhalten", "Kinderzitate zu Mut, Herausforderung und Lieblingsstationen"],
+        sources: ["Renate Zimmer: Psychomotorik und Bewegungserziehung", "Teilangeleitete Bewegungsaktivität Bewegungslandschaft"]
       },
       forscherraum: {
         title: "Forscherraum",
@@ -470,7 +535,7 @@ export const objectInfo = {
       },
       musik: {
         title: "Musikbereich",
-        images: ["assets/musik/rhythmikeinheit.jpeg"],
+        images: ["src/assets/musik/musikraum-fotorealistisch.jpg"],
         description: "Klangraum für Rhythmik, Singen, Instrumente, Bewegung und Hörwahrnehmung.",
         minimum: ["Eine Gitarre und 15 ORFF-Instrumente, darunter Rahmen-, Schellen- und Holzblocktrommel, Becken, Triangel und Klangstäbe mit Schlegeln.", "15 Paar Klanghölzer sowie 15 verschiedene Rasseln und Schellenbäume oder -bänder.", "25 Chiffon- oder Tülltücher sowie CD-Player und verschiedene CDs."],
         theory: [
@@ -504,7 +569,7 @@ export const objectInfo = {
       },
       rhythmik: {
         title: "Rhythmikeinheit im Musikbereich",
-        images: ["assets/musik/rhythmikeinheit.jpeg"],
+        images: [],
         description: "Eine vorbereitete Kreismitte verbindet Instrumente, Tücher, Bewegung, Wahrnehmung und gemeinsames musikalisches Gestalten.",
         areas: ["Ästhetik und Gestaltung", "Bewegung und Gesundheit", "Emotionen und soziale Beziehungen"], age: "3 bis 6 Jahre",
         material: "ORFF-Instrumente, gestaltete Kreismitte, Chiffontücher, Sitzkissen und Naturmaterialien", prep: "mittel", duration: "20 bis 35 Minuten", season: "ganzjährig", group: "Kleingruppe bis Teilgruppe",
@@ -569,7 +634,7 @@ export const objectInfo = {
         ],
         documents: [
           { type: "PDF", title: "Handout: Bildungs- und Lerngeschichten", note: "Theoretische und praktische Grundlage für ressourcenorientierte Lerndokumentation", href: "src/assets/portfolio/Handout_Bildungs-und-Lerngeschichten.pdf" },
-          { type: "PDF", title: "Rezept für die perfekte Bildungs- und Lerngeschichte", note: "Kompakte Schreibhilfe für Aufbau, Sprache und pädagogische Haltung", href: "src/assets/portfolio/Rezept_Bildungs-und-Lerngeschichte.pdf" },
+          { type: "PDF", title: "Rezept für Bildungs- und Lerngeschichten", note: "Kompakte Schreibhilfe für Aufbau, Sprache und pädagogische Haltung", href: "src/assets/portfolio/Rezept_Bildungs-und-Lerngeschichte.pdf" },
           { type: "PDF", title: "Beispiel: Lerngeschichte Lukas", note: "Exemplarische Bildungs- und Lerngeschichte als Anschauungsbeispiel", href: "src/assets/portfolio/Lerngeschichte_Lukas.pdf" }
         ]
       },
@@ -592,6 +657,7 @@ export const objectInfo = {
       },
       klanggeschichte: {
         title: "Bildungsaktivität: Klanggeschichte",
+        images: ["assets/musik/rhythmikeinheit.jpeg"],
         description: "Eine erzählte Geschichte wird mit Tönen, Klängen, Geräuschen, Stimme, Bewegung und ausgewählten Instrumenten gemeinsam gestaltet.",
         theory: [
           "Zuerst die Geschichte mit Bildern oder Gegenständen erzählen und gemeinsam über ihren Inhalt sprechen.",
@@ -999,6 +1065,7 @@ objectInfo.sandwanne = {
 
 objectInfo.mikroskop = {
   title: "Mikroskopierstation",
+  images: ["src/assets/mint/mikroskop-bienenwabe.jpg"],
   description: "Zwei Mikroskope am eigenen Forschertisch neben den großen Fenstern ermöglichen gemeinsames genaues Beobachten.",
   areas: ["Natur und Technik", "Sprache und Kommunikation"],
   age: "4 bis 6 Jahre", material: "Zwei Mikroskope, Objektträger, Pipetten, Pinzetten, Lupen und Naturmaterialien", prep: "mittel", duration: "10 bis 30 Minuten", season: "ganzjährig", group: "Tandemtätigkeit oder Kleingruppe",
@@ -1028,6 +1095,7 @@ objectInfo.materialregal = {
 
 objectInfo.lichttisch = {
   title: "Statisch leuchtender Lichttisch",
+  images: ["src/assets/mint/leuchttisch.jpg"],
   description: "Rechteckiger Lichttisch mit konstantem, ruhigem Licht für Legematerialien, geometrische Formen und additive Farbmischung.",
   areas: ["Natur und Technik", "Ästhetik und Gestaltung"],
   age: "3 bis 6 Jahre", material: "Lichttisch, transparente Acrylkreise, Dreiecke, Vierecke und Sechsecke in Rot, Grün, Blau und Gelb", prep: "gering", duration: "10 bis 40 Minuten", season: "ganzjährig", group: "Einzelbeschäftigung bis Kleingruppe",

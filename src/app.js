@@ -1107,6 +1107,13 @@ function buildCafeteriaKitchen() {
   meshBox(area, [.22, .85, .22], [27.45, 1.78, 11.5], materials.dark, "kochinsel", [0, 0, -.55]);
   meshBox(area, [.5, .18, .5], [27.0, 2.18, 11.5], materials.cream, "kochinsel");
 
+  // Rezeptmappen auf der niedrigen Anrichte, bewusst auf Kinderhöhe erreichbar.
+  for (let i = 0; i < 5; i++) {
+    meshBox(area, [.62, .46, .08], [25.9 + i * .48, .98, 13.12], [materials.coral, materials.yellow, materials.blue, materials.sage, materials.violet][i], "kochrezepte", [0, .08, -.08]);
+  }
+  meshBox(area, [2.65, .08, 1.05], [26.9, .84, 13.12], materials.cream, "kochrezepte");
+  makeLabel("Kinder-Rezeptmappen", [26.9, 2.0, 13.15], 2.6);
+
   makeLabel("Ess- und Cafeteriabereich", [21.2, 5.25, 18.2], 4.7);
   makeLabel("Offene Küche", [29.4, 5.0, 9.3], 3.5);
 }
@@ -1277,6 +1284,7 @@ function buildInterior() {
   addSurfaceDecal(atelier, "src/assets/atelier/palette-modern.png", [-22.25, 1.205, -13.45], 1.55, 1.24, -.2, null);
   addSurfaceDecal(atelier, "src/assets/atelier/palette-aquarell.png", [-19.7, 1.208, -13.5], 1.85, 1.2, .18, null);
   addSurfaceDecal(atelier, "src/assets/atelier/farbspritzer.png", [-21.05, 1.212, -14.15], 1.75, .94, -.08, null);
+  addSurfaceDecal(atelier, "src/assets/atelier/bodenbild.jpg", [-32.45, .235, -14.2], 5.4, 3.05, Math.PI / 2, "atelier");
 
   // Neue Wandgestaltung auf der Atelierseite der Trennwand zum Forscherbereich.
   addWallTattoo(atelier, "src/assets/atelier/wandbild-galerie.png", [-27.75, 2.75, -26.78], 7.2, 4.05, 0, null);
@@ -1319,6 +1327,28 @@ function buildInterior() {
   for (const z of [-7.4, -9]) meshBox(movement, [5.6, .32, .75], [20.5, .55, z], materials.woodLight, "bewegungsausstattung");
   for (const [x, z, mat] of [[24.6, -14, materials.coral], [22.1, -13.2, materials.yellow], [26.7, -16.2, materials.sage]]) meshBox(movement, [2, 1.1, 2], [x, .65, z], mat, "bewegungsausstattung");
   for (let i = 0; i < 25; i++) meshSphere(movement, .46, [14 + (i % 5) * .46, .5 + Math.floor(i / 5) * .38, -8], i % 2 ? materials.yellow : materials.blue, "bewegungsausstattung");
+
+  // Bewegungslandschaft Zirkus nach Renate Zimmer: symbolische Stationen aus den Referenzfotos.
+  meshBox(movement, [6.4, .14, 4.8], [30.4, .55, -8.8], materials.cream, "zirkuslandschaft");
+  meshBox(movement, [3.6, 1.45, 2.2], [31.0, 1.1, -8.65], materials.dark, "zirkuslandschaft");
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col <= row; col++) {
+      const cup = meshCylinder(movement, .18, .42, [30.35 + (col - row / 2) * .48, 2.05 + row * .34, -8.65], materials.cream, "zirkuslandschaft");
+      cup.scale.set(1, 1, .75);
+    }
+  }
+  for (const [x, z, mat] of [[28.2, -6.55, materials.blue], [29.0, -11.2, materials.coral], [33.2, -6.9, materials.yellow]]) {
+    const hoop = new THREE.Mesh(new THREE.TorusGeometry(.72, .045, 10, 42), mat);
+    hoop.position.set(x, .72, z);
+    hoop.rotation.x = Math.PI / 2;
+    hoop.userData.infoKey = "zirkuslandschaft";
+    movement.add(hoop); interactiveMeshes.push(hoop);
+  }
+  meshBox(movement, [2.4, .34, 2.4], [34.0, .65, -11.0], materials.blue, "zirkuslandschaft");
+  meshSphere(movement, .72, [27.5, 1.22, -9.8], materials.yellow, "zirkuslandschaft");
+  meshSphere(movement, .5, [28.35, 1.12, -9.35], materials.coral, "zirkuslandschaft");
+  meshCylinder(movement, .12, 3.6, [27.9, 2.2, -10.2], materials.woodDark, "zirkuslandschaft", [Math.PI / 2, 0, .1]);
+  makeLabel("Bewegungslandschaft Zirkus", [31.0, 3.55, -8.4], 3.2);
 
   buildResearchRoom();
 
@@ -1666,9 +1696,10 @@ function renderFrame(now) {
 function list(items) { return `<ul>${(items || []).map(item => `<li>${item}</li>`).join("")}</ul>`; }
 function section(title, items) { return items?.length ? `<section class="info-section"><h3>${title}</h3>${list(items)}</section>` : ""; }
 
-function documentsMarkup(info) {
-  if (!info.documents?.length) return "";
-  return `<section class="info-section"><h3>Dokumente und Planungen</h3><div class="document-list">${info.documents.map(doc => {
+function documentsMarkup(info, key = "documents", title = "Dokumente und Planungen") {
+  const documents = info[key] || [];
+  if (!documents.length) return "";
+  return `<section class="info-section"><h3>${title}</h3><div class="document-list">${documents.map(doc => {
     const viewPath = doc.type === "DOCX" ? doc.href.replace(/\.docx$/i, ".html") : doc.href;
     return `<a class="document-link" href="${assetUrl(doc.href)}" data-view="${assetUrl(viewPath)}" data-title="${doc.title}" data-note="${doc.note}" data-type="${doc.type}"><span class="document-type">${doc.type}</span><span><strong>${doc.title}</strong><small>${doc.note}</small></span></a>`;
   }).join("")}</div></section>`;
@@ -1688,7 +1719,7 @@ function renderOverview() {
   const info = objectInfo[currentInfoKey];
   if (!info) return;
   const references = info.images?.length ? `<div class="reference-grid">${info.images.map((src, index) => `<button class="reference-button" type="button" data-image="${assetUrl(src)}" aria-label="Referenzbild ${index + 1} vergrößern"><img src="${assetUrl(src)}" alt="Referenzbild ${index + 1} für ${info.title}"></button>`).join("")}</div>` : "";
-  const tiles = [["target","Zielgruppe",info.age],["duration","Aktivitätsdauer",info.duration],["prep","Vorbereitung",info.prep],["social","Sozialform",info.group],["material","Material",info.material],["competencies","Kompetenzen / Lernziele","5 Kompetenzbereiche"]];
+  const tiles = [["target","Zielgruppe",info.age],["duration","Aktivitätsdauer",info.duration],["prep","Vorbereitung / Planung",info.prep],["social","Sozialform",info.group],["material","Material",info.material],["competencies","Kompetenzen / Lernziele","5 Kompetenzbereiche"]];
   infoBody.innerHTML = `${references}<div class="badges">${info.areas.map(area => `<span class="badge">${area}</span>`).join("")}</div><div class="tile-grid">${tiles.map(([key,label,value]) => `<button class="info-tile" type="button" data-layer="${key}"><strong>${label}</strong><span>${value}</span></button>`).join("")}</div>`;
   infoBody.scrollTop = 0;
 }
@@ -1699,9 +1730,9 @@ function renderCollection(layer) {
   const collections = {
     target: ["Zielgruppe", info.age, section("Pädagogische Differenzierung", info.variations)],
     duration: ["Aktivitätsdauer", info.duration, section("Zeitliche Variationen", info.variations) + section("Jahreszeit", info.season ? [info.season] : [])],
-    prep: ["Vorbereitung", info.prep, section("Praxis-Tipps", info.tips) + section("Sicherheitsaspekte", info.safety)],
+    prep: ["Vorbereitung / Planung", info.prep, section("Praxis-Tipps", info.tips) + section("Sicherheitsaspekte", info.safety) + documentsMarkup(info, "planningDocuments", "Fachliche Unterlagen zur pädagogisch-didaktischen Umsetzung")],
     social: ["Sozialform", info.group, section("Gruppenarrangements", info.variations) + section("Begleitung", info.tips)],
-    material: ["Material", info.material, section("Mindestausstattung laut Fachaufsicht, Stand 2019", info.minimum) + documentsMarkup(info)],
+    material: ["Material", info.material, section("Mindestausstattung laut Fachaufsicht, Stand 2019", info.minimum) + documentsMarkup(info) + documentsMarkup(info, "recipeDocuments", "Konkrete Rezepte und Kochimpulse")],
     competencies: ["Kompetenzen / Lernziele", info.areas.join(" · "), competenciesMarkup(info) + section("Objektbezogene theoretische Grundlage", info.theory)]
   };
   const collection = collections[layer];
