@@ -546,6 +546,33 @@ export const objectInfo = {
         documentation: ["Materialinteressen und selbstständige Nutzung beobachten"],
         sources: ["Vorbereitete Umgebung", "Partizipative Raumgestaltung"]
       },
+      portfolio: {
+        title: "Entwicklungs- und Übergabeportfolios",
+        description: "Die farbigen Ordner im Morgenkreisregal sammeln Bildungs- und Lerngeschichten, Beobachtungen, Kinderstimmen und Übergangsdokumentationen. Sie machen Entwicklung sichtbar und dienen als Gesprächsgrundlage mit Kindern, Team und Erziehungsberechtigten.",
+        areas: ["Emotionen und soziale Beziehungen", "Sprache und Kommunikation", "Ethik und Gesellschaft"],
+        age: "2 bis 6 Jahre",
+        material: "Portfolioordner, Beobachtungsnotizen, Fotos, Kinderzeichnungen, Bildungs- und Lerngeschichten, Übergabeblätter und Gesprächsnotizen",
+        prep: "kontinuierlich im Alltag",
+        duration: "5 bis 20 Minuten pro Eintrag oder Gespräch",
+        season: "ganzjährig",
+        group: "Einzelbeschäftigung, Tandemtätigkeit oder Gespräch mit Erziehungsberechtigten",
+        goals: ["Entwicklungsschritte ressourcenorientiert sichtbar machen", "Lernwege, Interessen und Stärken des Kindes dokumentieren", "Übergänge zwischen Familie, Kindergarten und Schule fachlich begleiten"],
+        variations: ["Bildungs- und Lerngeschichte als Brief an das Kind", "Portfolioseite mit Kinderzitat", "Fotosequenz eines Lernprozesses", "Übergabeportfolio für Gespräche mit Erziehungsberechtigten"],
+        tips: ["Portfolioarbeit regelmäßig mit dem Kind anschauen und kommentieren lassen.", "Beobachtungen möglichst konkret, wertschätzend und alltagsnah formulieren.", "Nicht nur Produkte, sondern vor allem Lernprozesse dokumentieren."],
+        safety: ["Datenschutz und Einverständniserklärungen beachten", "Sensible Informationen nur geschützt aufbewahren", "Fotos und persönliche Daten nicht frei zugänglich auslegen"],
+        documentation: ["Beobachtungen aus Alltagssituationen", "Bildungs- und Lerngeschichten", "Kinderzitate", "Entwicklungsverläufe", "Übergangsgespräche"],
+        sources: ["Bildungs- und Lerngeschichten", "Portfolioarbeit in elementaren Bildungseinrichtungen"],
+        theory: [
+          "Bildungs- und Lerngeschichten orientieren sich an Stärken, Interessen und Lernprozessen des Kindes.",
+          "Die Dokumentation unterstützt die professionelle Reflexion im Team und macht pädagogische Entscheidungen nachvollziehbar.",
+          "Für Übergänge werden Entwicklungsverläufe, Interessen und nächste Lernschritte so aufbereitet, dass sie eine anschlussfähige Begleitung ermöglichen."
+        ],
+        documents: [
+          { type: "PDF", title: "Handout: Bildungs- und Lerngeschichten", note: "Theoretische und praktische Grundlage für ressourcenorientierte Lerndokumentation", href: "src/assets/portfolio/Handout_Bildungs-und-Lerngeschichten.pdf" },
+          { type: "PDF", title: "Rezept für die perfekte Bildungs- und Lerngeschichte", note: "Kompakte Schreibhilfe für Aufbau, Sprache und pädagogische Haltung", href: "src/assets/portfolio/Rezept_Bildungs-und-Lerngeschichte.pdf" },
+          { type: "PDF", title: "Beispiel: Lerngeschichte Lukas", note: "Exemplarische Bildungs- und Lerngeschichte als Anschauungsbeispiel", href: "src/assets/portfolio/Lerngeschichte_Lukas.pdf" }
+        ]
+      },
       gitarre: {
         title: "Gitarre",
         description: "Saiteninstrument für Liedbegleitung, Klangexperimente und das Erleben von Rhythmus, Tonhöhe und Resonanz.",

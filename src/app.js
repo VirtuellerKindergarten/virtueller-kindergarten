@@ -995,7 +995,8 @@ function addMorningCircleShelf(parent) {
   for (let i = 0; i < 7; i++) {
     meshCylinder(parent, .22 + (i % 2) * .06, .48, [34.45, .62, z - 3.45 + i * .48], [materials.coral, materials.yellow, materials.blue][i % 3], "kreisregal", [0, 0, Math.PI / 2]);
   }
-  for (let i = 0; i < 5; i++) meshBox(parent, [.65, .72, .16], [34.45, 1.67, z - 3.3 + i * .72], [materials.coral, materials.sage, materials.yellow, materials.blue][i % 4], "kreisregal");
+  for (let i = 0; i < 5; i++) meshBox(parent, [.65, .72, .16], [34.45, 1.67, z - 3.3 + i * .72], [materials.coral, materials.sage, materials.yellow, materials.blue][i % 4], "portfolio");
+  meshBox(parent, [.06, .56, 2.85], [34.08, 1.72, z - 1.88], materials.cream, "portfolio");
 
   // Brettspiele als farbige, beschriftbare Spielschachteln.
   for (let i = 0; i < 5; i++) meshBox(parent, [.72, .16, 1.1], [34.45, 2.48 + i * .16, z - .65], [materials.blue, materials.coral, materials.yellow, materials.sage, materials.violet][i], "kreisregal");
